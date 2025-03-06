@@ -24,6 +24,7 @@ import {
   DialogTitle,
   IconButton,
   Chip,
+  Tooltip,
 } from "@mui/material";
 import {
   Edit,
@@ -38,8 +39,6 @@ function Dashboard() {
   const navigate = useNavigate();
   const [userType, setUserType] = useState("");
   const [tasks, setTasks] = useState([]);
-  // const[Time,setTime] = useState("")
-  // const [projects, setProjects] = useState([]);
   const [search, setSearch] = useState("");
   const [status, setStatus] = useState("");
   const [openDialog, setOpenDialog] = useState(false);
@@ -47,7 +46,7 @@ function Dashboard() {
   const [priority, setPriority] = useState("");
   const [date, setdate] = useState("");
   const [dueDate, setdueDate] = useState("");
-  const[userId,setUserId] = useState(null);
+  const [userId, setUserId] = useState(null);
 
   useEffect(() => {
     const fetchProfile = async () => {
@@ -61,7 +60,6 @@ function Dashboard() {
         });
         setUserType(response?.data?.user?.userType || "");
         setUserId(response?.data?.user?.userId);
-        // console.log(response?.data?.user?.userId);
       } catch (error) {
         console.error("Error fetching profile: ", error);
         navigate("/login");
@@ -74,14 +72,11 @@ function Dashboard() {
     const fetchTasks = async () => {
       try {
         if (userType === "Admin") {
-          const responce = await Axios.get(`http://localhost:5000/api/task/getalltask` ,
-          {
+          const responce = await Axios.get(`http://localhost:5000/api/task/getalltask`, {
             params: { search, status, date, dueDate, priority }
-          }
-        );
+          });
           setTasks(responce?.data?.task || []);
-        } 
-        else if (userType === "Employee") {
+        } else if (userType === "Employee") {
           const resp = await Axios.get(
             `http://localhost:5000/api/task/gettaskbyid/${userId}`,
             {
@@ -89,30 +84,15 @@ function Dashboard() {
             }
           );
           setTasks(resp?.data?.task || []);
-          // console.log(resp?.data?.task);
         }
       } catch (error) {
         console.error("Error fetching tasks: ", error);
       }
     };
-    if (userType){
-       fetchTasks();
-      };
+    if (userType) {
+      fetchTasks();
+    }
   }, [date, dueDate, priority, search, status, userId, userType]);
-
-  // useEffect(() => {
-  //   const fetchProjects = async () => {
-  //     try {
-  //       const res = await Axios.get(
-  //         `http://localhost:5000/api/project/filterprojects`
-  //       );
-  //       setProjects(res.data.projects);
-  //     } catch (error) {
-  //       console.error("Error fetching projects: ", error);
-  //     }
-  //   };
-  //   fetchProjects();
-  // }, [priority, date, dueDate]);
 
   const handleDeleteTask = async () => {
     try {
@@ -132,25 +112,48 @@ function Dashboard() {
         {userType === "Admin" ? "Admin Dashboard" : "Employee Dashboard"}
       </Typography>
       {userType === "Admin" ? (
-        <Grid container spacing={2} alignItems="center" justifyContent="center" gap={2} marginTop={3}>
-          <Button
-            variant="contained"
-            color="primary"
-            style={{ marginBottom: "50px" }}
-            onClick={() => navigate("/project")}
-            startIcon={<Add />}
-          >
-            Add project
-          </Button>
-          <Button
-            variant="contained"
-            color="primary"
-            style={{ marginBottom: "50px" }}
-            onClick={() => navigate("/addtasktoemployee")}
-            startIcon={<Add />}
-          >
-            Add Task To Employee
-          </Button>
+        <Grid
+          container
+          spacing={2}
+          alignItems="center"
+          justifyContent="center"
+          gap={2}
+          marginTop={3}
+        >
+          <Tooltip title="Project page">
+            <Button
+              variant="contained"
+              color="primary"
+              style={{ marginBottom: "50px" }}
+              onClick={() => navigate("/project")}
+              startIcon={<Add />}
+            >
+              project
+            </Button>
+          </Tooltip>
+          <Tooltip title="Admin Add Task for Employee">
+            <Button
+              variant="contained"
+              color="primary"
+              style={{ marginBottom: "50px" }}
+              onClick={() => navigate("/addtasktoemployee")}
+              startIcon={<Add />}
+            >
+              Add Task for Employee
+            </Button>
+          </Tooltip>
+          <Tooltip title="Go to user Controlls">
+            <Button
+              variant="contained"
+              color="primary"
+              // fullWidth
+              style={{ marginBottom: "50px" }}
+              onClick={() => navigate("/usercontrolls")}
+              startIcon={<Add />}
+            >
+              User Controlls
+            </Button>
+          </Tooltip>
         </Grid>
       ) : (
         ""
@@ -159,7 +162,7 @@ function Dashboard() {
       <Grid container spacing={2} alignItems="center" justifyContent="center">
         <Grid item xs={12} sm={4}>
           <TextField
-            label="Search"
+            label="Search ID's"
             fullWidth
             value={search}
             onChange={(e) => setSearch(e.target.value)}
@@ -213,15 +216,17 @@ function Dashboard() {
           />
         </Grid>
         <Grid item xs={12} sm={4}>
-          <Button
-            variant="contained"
-            color="primary"
-            onClick={() => navigate("/addtask")}
-            fullWidth
-            startIcon={<Add />}
-          >
-            Add Task to self
-          </Button>
+          <Tooltip title="Create a task for me">
+            <Button
+              variant="contained"
+              color="primary"
+              onClick={() => navigate("/addtask")}
+              fullWidth
+              startIcon={<Add />}
+            >
+              Add Task
+            </Button>
+          </Tooltip>
         </Grid>
       </Grid>
 
@@ -316,19 +321,23 @@ function Dashboard() {
                   </TableCell>
                   <TableCell>{x.dueDate}</TableCell>
                   <TableCell>
-                    <IconButton
-                      onClick={() => navigate(`/updatetask/${x.taskId}`)}
-                    >
-                      <Edit color="primary" />
-                    </IconButton>
-                    <IconButton
-                      onClick={() => {
-                        setSelectedTaskId(x.taskId);
-                        setOpenDialog(true);
-                      }}
-                    >
-                      <Delete color="error" />
-                    </IconButton>
+                    <Tooltip title="Edit Task">
+                      <IconButton
+                        onClick={() => navigate(`/updatetask/${x.taskId}`)}
+                      >
+                        <Edit color="primary" />
+                      </IconButton>
+                    </Tooltip>
+                    <Tooltip title="Delete Task">
+                      <IconButton
+                        onClick={() => {
+                          setSelectedTaskId(x.taskId);
+                          setOpenDialog(true);
+                        }}
+                      >
+                        <Delete color="error" />
+                      </IconButton>
+                    </Tooltip>
                   </TableCell>
                 </TableRow>
               ))}

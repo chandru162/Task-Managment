@@ -83,6 +83,7 @@ exports.AllTaskSearchAndFilters = async (req, res) => {
       filter.$or = [
         { taskId: { $regex: search, $options: "i" } },
         { projectId: { $regex: search, $options: "i" } },
+        { userId: { $regex: search, $options: "i" } },
       ];
     }
 
@@ -120,6 +121,7 @@ exports.getTaskById = async (req, res) => {
       filter.$or = [
         { taskId: { $regex: search, $options: "i" } },
         { projectId: { $regex: search, $options: "i" } },
+        
       ];
     }
 

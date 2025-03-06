@@ -37,6 +37,7 @@ import WbSunny from "@mui/icons-material/WbSunny";
 import DarkModeIcon from "@mui/icons-material/DarkMode";
 
 import AddTaskToEmployee from './Pages/AddTaskToEmployee.jsx';
+import UserControls from './Pages/UserControls.jsx';
 
 
 function App() {
@@ -78,7 +79,7 @@ function App() {
           <ListItemIcon>
             <ControlPoint />
           </ListItemIcon>
-          <ListItemText primary="Add Task to self" />
+          <ListItemText primary="Add Task" />
         </ListItem>
         <Divider />
         <ListItem button component="a" href="/login">
@@ -94,6 +95,7 @@ function App() {
           <ListItemText primary="Signup" />
         </ListItem>
       </List>
+      <Divider />
       <List>
         <ListItem button component="a" href="/profile">
           <ListItemIcon>
@@ -101,13 +103,6 @@ function App() {
           </ListItemIcon>
           <ListItemText primary="Profile" />
         </ListItem>
-
-        {/* <ListItem button component="a" href="/addtasktoemployee">
-          <ListItemIcon>
-            <MailIcon />
-          </ListItemIcon>
-          <ListItemText primary="Add Task to Employee" />
-        </ListItem> */}
       </List>
     </Box>
   );
@@ -167,6 +162,7 @@ function App() {
                 <Route path="/addtask" element={<AddTask />} />
                 <Route path="/project" element={<Project />} />
                 <Route path="/updatetask/:taskId" element={<UpdateTask />} />
+                <Route path="/usercontrolls" element={<UserControls/>} />
                 <Route
                   path="/addtasktoemployee"
                   element={<AddTaskToEmployee />}

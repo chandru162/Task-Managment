@@ -1,7 +1,7 @@
 import { useState } from "react";
 import Axios from "axios";
 import { Link, useNavigate } from "react-router-dom";
-import { TextField, Button, Typography, Box, Container } from "@mui/material";
+import { TextField, Button, Typography, Box, Container} from "@mui/material";
 
 function Login() {
   const Navigate = useNavigate();
@@ -63,7 +63,13 @@ function Login() {
             <Link to="/forgetpassword">Forget password?</Link>
           </Box>
           <Typography color="error">{message}</Typography>
-          <Button type="submit" variant="contained" color="primary" fullWidth style={{marginTop:"20px"}}>
+          <Button
+            type="submit"
+            variant="contained"
+            color="primary"
+            fullWidth
+            style={{ marginTop: "20px" }}
+          >
             Login now
           </Button>
           <Box textAlign="left" width="100%" mt={2}>

@@ -162,3 +162,30 @@ exports.ForgetPassword = async(req,res)=>{
         res.status(500).json({ message: "Internal server error" })
     }
 }
+
+exports.GetAlluserForAdmin = async (req, res) => {
+    try {
+        const token = req.headers.authorization.split(" ")[1];
+
+        if (!token) {
+            return res.status(400).json({ message: "Session expired, please login" });
+        }
+
+        const decode = jwt.verify(token, process.env.JWT_KEY);
+        if (!decode) {
+            return res.status(400).json({ message: "Invalid token" });
+        }
+
+        const user = await User.findOne({ userId: decode.userId }).exec();
+        if (!user || user.userType !== 'Admin') {
+            return res.status(403).json({ message: "Access denied" });
+        }
+
+        const users = await User.find().exec();
+        res.status(200).json({ users });
+
+    } catch (error) {
+        console.log("Get all users error:", error);
+        res.status(500).json({ message: "Internal server error" });
+    }
+}

@@ -34,8 +34,15 @@ const ProjectScheema = new mongoose.Schema({
 
 ProjectScheema.pre('save', async function (next) {
     if (this.isNew) {
-        const count = (await this.constructor.countDocuments()) + 1; // Get the current count and increment
-        this.projectId = `P${count.toString().padStart(4, '0')}`; // Generate the taskId
+        let count;
+        const latestproject = await this.constructor.findOne().sort({ projectId: -1 });
+        if (latestproject) {
+            const latestprojectId = parseInt(latestproject.projectId.substring(1));
+            count = latestprojectId + 1;
+        } else {
+            count = 1; 
+        }
+        this.projectId = `P${count.toString().padStart(4, '0')}`;
     }
     next();
 });

@@ -13,10 +13,11 @@ import {
   Container,
 } from "@mui/material";
 
-function AddTask() {
+function AddTaskToEmployee() {
   const Navigate = useNavigate();
-  const [User, setUser] = useState("");
   const [ProjectId, setProjectId] = useState("");
+  const [UserId, setUserId] = useState("");
+  const [UserType] = useState("Employee");
   const [TaskName, setTaskName] = useState("");
   const [ProjectName, setProjectName] = useState("");
   const [TaskDescription, setTaskDescription] = useState("");
@@ -25,17 +26,12 @@ function AddTask() {
   const [CreatedDate, setCreatedDate] = useState(
     new Date().toISOString().split("T")[0]
   );
-    
-    const [Time, setTime] = useState(new Date().toISOString().split("T")[1].split("Z")[0])
+  const [Time, setTime] = useState(new Date().toISOString().split("T")[1].split("Z")[0]);
   const [DueDate, setDueDate] = useState("");
   const [message, setmessage] = useState("");
   const [projects, setProjects] = useState([]);
 
-  const Email = User.email;
-  const Username = User.userName;
-  const UserId = User.userId;
-  const UserType = User.userType;
-  const Phone = User.phone;
+
 
   useEffect(() => {
     const FetchProfileData = async () => {
@@ -45,15 +41,7 @@ function AddTask() {
           alert("Session has timeout!, please log in!");
           Navigate("/login");
         }
-        const responce = await Axios.get(
-          `http://localhost:5000/api/auth/profile`,
-          {
-            headers: {
-              Authorization: `Bearer ${sessionStorage.getItem("token")}`,
-            },
-          }
-        );
-        setUser(responce?.data?.user || "");
+
       } catch (error) {
         console.log("Error: ", error);
         setmessage("Session has time out or somthing faild !");
@@ -99,18 +87,15 @@ function AddTask() {
       setStatus("");
       setCreatedDate("");
       setDueDate("");
-      setTime("")
+      setTime("");
     };
 
-    Axios.post(`http://localhost:5000/api/task/createtask`, {
+    Axios.post(`http://localhost:5000/api/task/addtasktoemployee`, {
       taskName: TaskName,
       projectName: ProjectName,
-      time:Time,
-      email: Email,
-      userName: Username,
-      userId: UserId,
+      userId : UserId,
+      time: Time,
       userType: UserType,
-      phone: Phone,
       projectId: ProjectId,
       taskDescription: TaskDescription,
       priority: Priority,
@@ -118,21 +103,32 @@ function AddTask() {
       date: CreatedDate,
       dueDate: DueDate,
     })
+      .then((res) => {
+        InputClear();
+        alert(res?.data?.message || "Task assigned to employee successfully!");
 
-
-
-        .then((res) => {
-          InputClear();
-          alert(res?.data?.message || "Task created successfully!");
-
-          Navigate(-1);
-        })
-        .catch((error) => {
-          setmessage(
-            error?.responce?.data?.message || "All fields are required"
-          );
-
-        });
+        Navigate(-1);
+      })
+      .catch((error) => {
+        setmessage(
+          error?.responce?.data?.message || "All fields are required"
+        );
+        console.log(
+         {
+            taskName: TaskName,
+            projectName: ProjectName,
+            userId: UserId,
+            time: Time,
+            userType: UserType,
+            projectId: ProjectId,
+            taskDescription: TaskDescription,
+            priority: Priority,
+            status: Status,
+            date: CreatedDate,
+            dueDate: DueDate,
+          }
+        );
+      });
   };
 
   return (
@@ -149,9 +145,17 @@ function AddTask() {
           style={{ marginBottom: "50px", marginTop: "50px" }}
         >
           <Typography variant="h4" component="h1" gutterBottom>
-            Add Task
+            Add Task to Employee
           </Typography>
 
+          <TextField
+            fullWidth
+            margin="normal"
+            type="text"
+            label="User ID"
+            value={UserId}
+            onChange={(e) => setUserId(e.target.value)}
+          />
           <TextField
             fullWidth
             margin="normal"
@@ -185,18 +189,7 @@ function AddTask() {
                 </MenuItem>
               ))}
             </Select>
-
           </FormControl>
-
-          {/* <TextField
-            fullWidth
-            margin="normal"
-            type="date"
-            label="Created Date"
-            InputLabelProps={{ shrink: true }}
-            value={CreatedDate}
-            onChange={(e) => setCreatedDate(e.target.value)}
-          /> */}
           <TextField
             fullWidth
             margin="normal"
@@ -238,7 +231,7 @@ function AddTask() {
           </FormControl>
           <Typography color="error">{message}</Typography>
           <Button type="submit" variant="contained" color="primary" fullWidth>
-            Add Task
+            Add Task to Employee
           </Button>
         </form>
       </Box>
@@ -246,4 +239,4 @@ function AddTask() {
   );
 }
 
-export default AddTask;
+export default AddTaskToEmployee;

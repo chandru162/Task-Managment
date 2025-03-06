@@ -66,7 +66,7 @@ function Project() {
       setProjectName('');
       setProjectDescription('');
       setPriority('');
-      setTime(new Date().getTime().toString());
+      setTime("");
       setDate(new Date().toISOString().split('T')[0]);
       fetchProjects();
     } catch (error) {

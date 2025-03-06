@@ -7,7 +7,9 @@ const TaskSchema = new mongoose.Schema({
     },
     time: {
         type: String,
-        required: true
+        required:true,
+        unique: false
+
     },
     date: {
         type: String,
@@ -15,11 +17,9 @@ const TaskSchema = new mongoose.Schema({
     },
     email: {
         type: String,
-        required: true
     },
     phone: {
         type: Number,
-        required: true,
         minlength: 10
     },
     userId: {
@@ -28,13 +28,11 @@ const TaskSchema = new mongoose.Schema({
     },
     userType: {
         type: String,
-        required: true,
         enum: ["Admin", "Employee"],
         default: ""
     },
     userName: {
         type: String,
-        required: true
     },
     projectId: {
         type: String,
@@ -59,21 +57,30 @@ const TaskSchema = new mongoose.Schema({
     },
     priority:{
         type:String,
-        enum:["High","Medium","Low"]
+        enum:["High","Medium","Low"],
+        default:"High"
     },
     dueDate: {
         type: String,
-        required: true
     }
-});
+},{timestamps:true});
+
 
 TaskSchema.pre('save', async function (next) {
     if (this.isNew) {
-        const count = (await this.constructor.countDocuments()) + 1; // Get the current count and increment
-        this.taskId = `T${count.toString().padStart(4, '0')}`; // Generate the taskId
+        let count;
+        const latestTask = await this.constructor.findOne().sort({ taskId: -1 });
+        if (latestTask) {
+            const latestTaskId = parseInt(latestTask.taskId.substring(1));
+            count = latestTaskId + 1;
+        } else {
+            count = 1; 
+        }
+        this.taskId = `T${count.toString().padStart(4, '0')}`;
     }
     next();
 });
+
 
 const Task = mongoose.model('Task', TaskSchema);
 module.exports = Task;

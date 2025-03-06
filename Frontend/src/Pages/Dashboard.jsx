@@ -31,12 +31,14 @@ import {
   Search,
   CheckCircle,
   HourglassEmpty,
+  Add,
 } from "@mui/icons-material";
 
 function Dashboard() {
   const navigate = useNavigate();
   const [userType, setUserType] = useState("");
   const [tasks, setTasks] = useState([]);
+  // const[Time,setTime] = useState("")
   // const [projects, setProjects] = useState([]);
   const [search, setSearch] = useState("");
   const [status, setStatus] = useState("");
@@ -129,8 +131,32 @@ function Dashboard() {
       <Typography variant="h4" align="center" gutterBottom>
         {userType === "Admin" ? "Admin Dashboard" : "Employee Dashboard"}
       </Typography>
+      {userType === "Admin" ? (
+        <Grid container spacing={2} alignItems="center" justifyContent="center" gap={2} marginTop={3}>
+          <Button
+            variant="contained"
+            color="primary"
+            style={{ marginBottom: "50px" }}
+            onClick={() => navigate("/project")}
+            startIcon={<Add />}
+          >
+            Add project
+          </Button>
+          <Button
+            variant="contained"
+            color="primary"
+            style={{ marginBottom: "50px" }}
+            onClick={() => navigate("/addtasktoemployee")}
+            startIcon={<Add />}
+          >
+            Add Task To Employee
+          </Button>
+        </Grid>
+      ) : (
+        ""
+      )}
 
-      <Grid container spacing={2} alignItems="center">
+      <Grid container spacing={2} alignItems="center" justifyContent="center">
         <Grid item xs={12} sm={4}>
           <TextField
             label="Search"
@@ -192,43 +218,85 @@ function Dashboard() {
             color="primary"
             onClick={() => navigate("/addtask")}
             fullWidth
+            startIcon={<Add />}
           >
-            Add Task
+            Add Task to self
           </Button>
         </Grid>
       </Grid>
 
-      <TableContainer component={Paper} sx={{ marginTop: 3 }}>
-        <Table>
+      <TableContainer
+        component={Paper}
+        sx={{
+          marginTop: 3,
+          overflowY: "scroll",
+          maxWidth: "100%",
+          overflowX: "scroll",
+        }}
+        style={{ height: "80vh" }}
+      >
+        <Table stickyHeader>
           <TableHead>
             <TableRow>
-              <TableCell style={{ color: "darkblue" }}>Task ID</TableCell>
-              <TableCell style={{ color: "darkblue" }}>Time</TableCell>
-              <TableCell style={{ color: "darkblue" }}>Date</TableCell>
-              <TableCell style={{ color: "darkblue" }}>UserId</TableCell>
-              <TableCell style={{ color: "darkblue" }}>Task Name</TableCell>
-              <TableCell style={{ color: "darkblue" }}>Task Description</TableCell>
-              <TableCell style={{ color: "darkblue" }}>ProjectId</TableCell>
-              <TableCell style={{ color: "darkblue" }}>Project Name</TableCell>
-              <TableCell style={{ color: "darkblue" }}>Status</TableCell>
-              <TableCell style={{ color: "darkblue" }}>Priority</TableCell>
-              <TableCell style={{ color: "darkblue" }}>Due Date</TableCell>
-              <TableCell style={{ color: "darkblue" }}>Actions</TableCell>
+              <TableCell className="tablecell" style={{ color: "darkblue" }}>
+                TaskID
+              </TableCell>
+              <TableCell className="tablecell" style={{ color: "darkblue" }}>
+                Time
+              </TableCell>
+              <TableCell className="tablecell" style={{ color: "darkblue" }}>
+                Date
+              </TableCell>
+              <TableCell className="tablecell" style={{ color: "darkblue" }}>
+                UserId
+              </TableCell>
+              <TableCell className="tablecell" style={{ color: "darkblue" }}>
+                TaskName
+              </TableCell>
+              <TableCell className="tablecell" style={{ color: "darkblue" }}>
+                TaskDescription
+              </TableCell>
+              <TableCell className="tablecell" style={{ color: "darkblue" }}>
+                ProjectId
+              </TableCell>
+              <TableCell className="tablecell" style={{ color: "darkblue" }}>
+                ProjectName
+              </TableCell>
+              <TableCell className="tablecell" style={{ color: "darkblue" }}>
+                Status
+              </TableCell>
+              <TableCell className="tablecell" style={{ color: "darkblue" }}>
+                Priority
+              </TableCell>
+              <TableCell className="tablecell" style={{ color: "darkblue" }}>
+                DueDate
+              </TableCell>
+              <TableCell className="tablecell" style={{ color: "darkblue" }}>
+                Actions
+              </TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
             {Array.isArray(tasks) &&
               tasks.map((x) => (
                 <TableRow key={x._id}>
-                  <TableCell style={{ color: "red" }}>{x.taskId}</TableCell>
-                  <TableCell>{x.time}</TableCell>
-                  <TableCell>{x.date}</TableCell>
-                  <TableCell style={{ color: "red" }}>{x.userId}</TableCell>
-                  <TableCell>{x.taskName}</TableCell>
-                  <TableCell>{x.taskDescription}</TableCell>
-                  <TableCell style={{ color: "red" }}>{x.projectId}</TableCell>
-                  <TableCell>{x.projectName}</TableCell>
-                  <TableCell>
+                  <TableCell className="tablecell" style={{ color: "red" }}>
+                    {x.taskId}
+                  </TableCell>
+                  <TableCell className="tablecell">{x.time}</TableCell>
+                  <TableCell className="tablecell">{x.date}</TableCell>
+                  <TableCell className="tablecell" style={{ color: "red" }}>
+                    {x.userId}
+                  </TableCell>
+                  <TableCell className="tablecell">{x.taskName}</TableCell>
+                  <TableCell className="tablecell">
+                    {x.taskDescription}
+                  </TableCell>
+                  <TableCell className="tablecell" style={{ color: "red" }}>
+                    {x.projectId}
+                  </TableCell>
+                  <TableCell className="tablecell">{x.projectName}</TableCell>
+                  <TableCell className="tablecell">
                     <Chip
                       label={x.status}
                       color={x.status === "Done" ? "success" : "warning"}

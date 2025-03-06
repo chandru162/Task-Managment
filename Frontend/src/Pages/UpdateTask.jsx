@@ -13,6 +13,7 @@ function UpdateTask() {
   const [Status, setStatus] = useState("");
   const [DueDate, setDueDate] = useState("");
   const [message, setmessage] = useState("");
+  const[Task,setTask] = useState("")
 
   const Email = User.email;
   const Username = User.username;
@@ -50,33 +51,33 @@ function UpdateTask() {
     const FetchTaskData = async () => {
       try {
         const responce = await Axios.get(
-          `http://localhost:5000/api/task/gettaskbyprojectid/${taskId}`
+          `http://localhost:5000/api/task/gettaskbytaskid/${taskId}`
         );
-        const task = responce?.data?.task;
-        setTaskName(task?.projectname);
-        setTaskDescription(task?.projectdescription);
-        setPriority(task?.priority);
-        setStatus(task?.status);
-        setDueDate(task?.dueDate);
+        setTask(responce?.data?.task || "");
+        setTaskName(Task.taskName);
+        setTaskDescription(Task.taskDescription);
+        setPriority(Task.priority);
+        setStatus(Task.status);
+        setDueDate(Task.dueDate);
       } catch (error) {
         console.log("Error: ", error);
         setmessage("Failed to fetch task data");
       }
     };
     FetchTaskData();
-  }, [taskId]);
+  }, [Task.dueDate, Task.priority, Task.projectDescription, Task.projectName, Task.status, Task.taskDescription, Task.taskName, taskId]);
 
   const handleSubmit = (e) => {
     e.preventDefault();
 
     Axios.put(`http://localhost:5000/api/task/updatetask/${taskId}`, {
-      projectname: TaskName,
+      taskName: TaskName,
       email: Email,
-      username: Username,
+      userName: Username,
       userId: UserId,
       userType: UserType,
       phone: Phone,
-      projectdescription: TaskDescription,
+      taskDescription: TaskDescription,
       priority: Priority,
       status: Status,
       dueDate: DueDate,
@@ -94,7 +95,7 @@ function UpdateTask() {
 
   return (
     <Container maxWidth="sm">
-      <form onSubmit={handleSubmit} style={{marginBottom:"50px"}}>
+      <form onSubmit={handleSubmit} style={{ marginBottom: "50px" }}>
         <Typography variant="h4" component="h1" gutterBottom>Update Task</Typography>
         <FormControl fullWidth margin="normal">
           <TextField

@@ -35,8 +35,15 @@ const UserScheema = new mongoose.Schema({
 
 UserScheema.pre('save', async function (next) {
     if (this.isNew) {
-        const count = (await this.constructor.countDocuments()) + 1; // Get the current count and increment
-        this.userId = `NP${count.toString().padStart(4, '0')}`; // Generate the taskId
+        let count;
+        const latestUser = await this.constructor.findOne().sort({ userId: -1 });
+        if (latestUser) {
+            const latestuserId = parseInt(latestTask.userId.substring(2));
+            count = latestuserId + 1;
+        } else {
+            count = 1; 
+        }
+        this.userId = `NP${count.toString().padStart(4, '0')}`; // Generate the userId
     }
     next();
 });

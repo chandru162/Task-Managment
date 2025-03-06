@@ -148,20 +148,20 @@ exports.getTaskById = async (req, res) => {
     res.status(500).json({ message: "Internal server error" });
   }
 };
-// exports.getTaskByProjectId = async (req, res) => {
-//   try {
-//     const task = await Task.findOne({ projectId: req.params.projectId }).exec();
+exports.getTaskByTaskId = async (req, res) => {
+  try {
+    const task = await Task.findOne({ taskId: req.params.taskId }).exec();
 
-//     if (!task) {
-//       return res.status(400).json({ message: "task not found!" });
-//     }
+    if (!task) {
+      return res.status(400).json({ message: "task not found!" });
+    }
 
-//     res.status(200).json({ task });
-//   } catch (error) {
-//     console.log("Error in getting task by project by Id", error);
-//     res.status(500).json({ message: "Internal server error" });
-//   }
-// };
+    res.status(200).json({ task });
+  } catch (error) {
+    console.log("Error in getting task by project by Id", error);
+    res.status(500).json({ message: "Internal server error" });
+  }
+};
 
 exports.updateTask = async (req, res) => {
   try {
@@ -233,3 +233,54 @@ exports.DeleteTask = async (req, res) => {
 //     res.status(500).json({ message: "Internal server error" });
 //   }
 // };
+
+exports.AddTaskToEmployee = async (req, res) => {
+  try {
+    const {
+      userId,
+      status,
+      userType,
+      projectId,
+      projectName,
+      taskName,
+      taskDescription,
+      priority,
+      date,
+      dueDate,
+      time
+    } = req.body;
+
+    if (
+      !userId ||
+      !projectId ||
+      !projectName ||
+      !taskName ||
+      !taskDescription ||
+      !priority ||
+      !date ||
+      !dueDate
+    ) {
+      return res.status(400).json({ message: "All fields are required" });
+    }
+
+    const task = new Task({
+      time,
+      userId,
+      status,
+      userType,
+      projectId,
+      projectName,
+      taskName,
+      taskDescription,
+      priority,
+      date,
+      dueDate,
+    });
+
+    await task.save();
+    res.status(200).json({ message: "Task added to employee successfully", task });
+  } catch (error) {
+    console.log("Error in adding task to employee", error);
+    res.status(500).json({ message: "Internal server error" });
+  }
+};

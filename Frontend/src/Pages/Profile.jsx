@@ -22,7 +22,7 @@ function Profile() {
             },
           }
         );
-        setdata(responce.data.user);
+        setdata(responce.data.user || "");
       } catch (error) {
         console.log("Error: ", error);
         setmessage("Session has time out Please Login");
@@ -121,7 +121,7 @@ function Profile() {
             <TableBody>
               <TableRow>
                 <TableCell component="th" scope="row">Name:</TableCell>
-                <TableCell>{data.username}</TableCell>
+                <TableCell> {data.userName}</TableCell>
               </TableRow>
               <TableRow>
                 <TableCell component="th" scope="row">Email:</TableCell>
@@ -133,7 +133,7 @@ function Profile() {
               </TableRow>
               <TableRow>
                 <TableCell component="th" scope="row">User Type:</TableCell>
-                <TableCell>{data.usertype}</TableCell>
+                <TableCell>{data.userType}</TableCell>
               </TableRow>
               <TableRow>
                 <TableCell component="th" scope="row">Phone:</TableCell>
@@ -161,7 +161,7 @@ function Profile() {
                 label="Name"
                 type="text"
                 fullWidth
-                value={data.username}
+                value={data.userName}
                 onChange={handleChange}
               />
               <TextField

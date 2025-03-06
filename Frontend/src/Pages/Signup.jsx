@@ -17,7 +17,7 @@ function Signup() {
   const Navigate = useNavigate();
   const [Email, setEmail] = useState("");
   const [Username, setUsername] = useState("");
-  const [UserId, setUserId] = useState("");
+  // const [UserId, setUserId] = useState("");
   const [UserType, setUserType] = useState("");
   const [Phone, setPhone] = useState("");
   const [Password, setPassword] = useState("");
@@ -34,7 +34,7 @@ function Signup() {
     const InputClear = () => {
       setEmail("");
       setUsername("");
-      setUserId("");
+      // setUserId("");
       setUserType("");
       setPhone("");
       setPassword("");
@@ -44,9 +44,8 @@ function Signup() {
 
     Axios.post(`http://localhost:5000/api/auth/signup`, {
       email: Email,
-      username: Username,
-      userId: UserId,
-      usertype: UserType,
+      userName: Username,
+      userType: UserType,
       phone: Phone,
       password: Password,
     })
@@ -91,14 +90,14 @@ function Signup() {
             value={Username}
             onChange={(e) => setUsername(e.target.value)}
           />
-          <TextField
+          {/* <TextField
             fullWidth
             margin="normal"
             type="text"
             label="UserId"
             value={UserId}
             onChange={(e) => setUserId(e.target.value)}
-          />
+          /> */}
           <TextField
             fullWidth
             margin="normal"

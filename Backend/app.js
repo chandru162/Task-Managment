@@ -22,6 +22,7 @@ app.use(cors({
 // import routes
 const authRoutes = require("./Router/auth_router.js")
 const taskRoutes = require("./Router/task_router.js")
+const projectRouter = require("./Router/project_router.js")
 
 // ------------------------
 
@@ -31,6 +32,7 @@ app.get('/',(req,res)=>{
 })
 app.use("/api/auth", authRoutes)
 app.use("/api/task",taskRoutes)
+app.use("/api/project",projectRouter)
 
 
 

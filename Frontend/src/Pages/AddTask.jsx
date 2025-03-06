@@ -16,8 +16,10 @@ import {
 function AddTask() {
   const Navigate = useNavigate();
   const [User, setUser] = useState("");
-  const [TaskId, setTaskId] = useState("");
+  const [Time,setTime] = useState(new Date().toLocaleTimeString());
+  const [ProjectId, setProjectId] = useState("");
   const [TaskName, setTaskName] = useState("");
+  const [ProjectName, setProjectName] = useState("");
   const [TaskDescription, setTaskDescription] = useState("");
   const [Priority, setPriority] = useState("");
   const [Status, setStatus] = useState("");
@@ -26,11 +28,12 @@ function AddTask() {
   );
   const [DueDate, setDueDate] = useState("");
   const [message, setmessage] = useState("");
+  const [projects, setProjects] = useState([]);
 
   const Email = User.email;
-  const Username = User.username;
+  const Username = User.userName;
   const UserId = User.userId;
-  const UserType = User.usertype;
+  const UserType = User.userType;
   const Phone = User.phone;
 
   useEffect(() => {
@@ -58,41 +61,104 @@ function AddTask() {
     FetchProfileData();
   }, [Navigate]);
 
+  useEffect(() => {
+    const fetchProjects = async () => {
+      try {
+        const res = await Axios.get(
+          "http://localhost:5000/api/project/getallproject"
+        );
+        setProjects(res?.data?.project || []);
+      } catch (error) {
+        console.error("Error fetching projects: ", error);
+      }
+    };
+    fetchProjects();
+  }, []);
+
+  useEffect(() => {
+    const selectedProject = projects.find(
+      (pro) => pro._id !== ProjectId
+    );
+    if (selectedProject) {
+      setPriority(selectedProject.priority);
+      setProjectId(selectedProject.projectId);
+    }
+    else{
+      console.log("selectedProject faid");
+    }
+  }, [ProjectId, projects]);
+
   const handleSubmit = (e) => {
     e.preventDefault();
 
     const InputClear = () => {
       setmessage("");
       setTaskName("");
+      setProjectId("");
       setTaskDescription("");
       setPriority("");
       setStatus("");
-      setCreatedDate(new Date().toISOString().split("T")[0]);
+      setCreatedDate("");
       setDueDate("");
     };
 
     Axios.post(`http://localhost:5000/api/task/createtask`, {
-      projectname: TaskName,
+      taskName: TaskName,
+      projectName: ProjectName,
       email: Email,
-      username: Username,
+      time: Time,
+      userName: Username,
       userId: UserId,
       userType: UserType,
       phone: Phone,
-      projectId: TaskId,
-      projectdescription: TaskDescription,
+      projectId: ProjectId,
+      taskDescription: TaskDescription,
       priority: Priority,
       status: Status,
       date: CreatedDate,
       dueDate: DueDate,
     })
-      .then((res) => {
-        InputClear();
-        alert(res?.data?.message || "Task created successfully!");
-        Navigate(-1)
-      })
-      .catch((error) => {
-        setmessage(error?.responce?.data?.message || "All fields are required");
-      });
+
+
+
+        .then((res) => {
+          InputClear();
+          alert(res?.data?.message || "Task created successfully!");
+          console.log({
+            taskName: TaskName,
+            email: Email,
+            time: Time,
+            userName: Username,
+            userId: UserId,
+            userType: UserType,
+            phone: Phone,
+            projectId: ProjectId,
+            taskDescription: TaskDescription,
+            priority: Priority,
+            status: Status,
+            date: CreatedDate,
+            dueDate: DueDate,
+          });
+          Navigate(-1);
+        })
+        .catch((error) => {
+          setmessage(error?.res?.data?.message || "Somthing Wrong!");
+                    console.log({
+                      taskName: TaskName,
+                      email: Email,
+                      time: Time,
+                      userName: Username,
+                      userId: UserId,
+                      userType: UserType,
+                      phone: Phone,
+                      projectId: ProjectId,
+                      taskDescription: TaskDescription,
+                      priority: Priority,
+                      status: Status,
+                      date: CreatedDate,
+                      dueDate: DueDate,
+                    });
+        });
   };
 
   return (
@@ -104,18 +170,14 @@ function AddTask() {
         justifyContent="center"
         height="100vh"
       >
-        <form onSubmit={handleSubmit} style={{marginBottom:"50px",marginTop:"50px"}}>
+        <form
+          onSubmit={handleSubmit}
+          style={{ marginBottom: "50px", marginTop: "50px" }}
+        >
           <Typography variant="h4" component="h1" gutterBottom>
             Add Task
           </Typography>
-          <TextField
-            fullWidth
-            margin="normal"
-            type="text"
-            label="Task Id"
-            value={TaskId}
-            onChange={(e) => setTaskId(e.target.value)}
-          />
+
           <TextField
             fullWidth
             margin="normal"
@@ -132,6 +194,34 @@ function AddTask() {
             value={TaskDescription}
             onChange={(e) => setTaskDescription(e.target.value)}
           />
+          <FormControl fullWidth margin="normal">
+            <InputLabel>Project Name</InputLabel>
+            <Select
+              value={ProjectName}
+              onChange={(e) => setProjectName(e.target.value)}
+              label="Project Name"
+            >
+              {projects.map((project) => (
+                <MenuItem
+                  key={project._id}
+                  value={project.projectName}
+                  onChange={(e) => {setProjectName(e.target.value)}}
+                >
+                  {project.projectName}
+                </MenuItem>
+              ))}
+            </Select>
+
+          </FormControl>
+          <TextField
+            fullWidth
+            margin="normal"
+            type="time"
+            label="Created Date"
+            InputLabelProps={{ shrink: true }}
+            value={Time}
+            onChange={(e) => setTime(e.target.value)}
+          />
           <TextField
             fullWidth
             margin="normal"
@@ -139,6 +229,7 @@ function AddTask() {
             label="Created Date"
             InputLabelProps={{ shrink: true }}
             value={CreatedDate}
+            desabled
             onChange={(e) => setCreatedDate(e.target.value)}
           />
           <TextField

@@ -1,0 +1,67 @@
+get all project
+
+http://localhost:5000/api/project/getallproject
+
+
+update project
+
+http://localhost:5000/api/project/updateproject/:projectId
+
+delete project
+
+http://localhost:5000/api/project/deleteproject/:projectId
+
+create project
+
+http://localhost:5000/api/project/createproject
+
+
+===================================================================================================
+create task
+
+http://localhost:5000/api/task/createtask
+
+get task by user Id
+
+http://localhost:5000/api/task/gettaskbyid/0002?projectId=T0007
+
+
+delete task
+
+http://localhost:5000/api/task/deletetask/T0002
+
+
+get all task for admin
+
+http://localhost:5000/api/task/getalltask?status=Done
+
+update task
+
+http://localhost:5000/api/task/updatetask/p0001
+=====================================================================================================
+user------
+
+forgotpassword
+
+http://localhost:5000/api/auth/forgetpassword
+
+profile
+
+http://localhost:5000/api/auth/profile
+
+delete user
+
+http://localhost:5000/api/auth/deleteuser/np00017
+
+signup 
+
+http://localhost:5000/api/auth/signup
+
+update user
+
+http://localhost:5000/api/auth/updateuser
+
+login
+
+http://localhost:5000/api/auth/login
+

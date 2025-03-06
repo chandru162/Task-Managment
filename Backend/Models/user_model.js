@@ -6,16 +6,15 @@ const UserScheema = new mongoose.Schema({
         required:true,
         unique: true
     },
-    username: {
+    userName: {
         type: String,
         required: true
     },
     userId:{
         type:String,
-        required:true,
         unique: true
     },
-    usertype:{
+    userType:{
         type:String,
         required:true,
         enum:["Admin","Employee"],
@@ -24,7 +23,6 @@ const UserScheema = new mongoose.Schema({
     phone:{
         type:Number,
         required:true,
-        unique: true,
         minlength: 10,
     },
     password:{
@@ -33,7 +31,15 @@ const UserScheema = new mongoose.Schema({
         minlength: 6,
     }
 
-})
+});
+
+UserScheema.pre('save', async function (next) {
+    if (this.isNew) {
+        const count = (await this.constructor.countDocuments()) + 1; // Get the current count and increment
+        this.userId = `NP${count.toString().padStart(4, '0')}`; // Generate the taskId
+    }
+    next();
+});
 
 const User = mongoose.model('User',UserScheema)
 module.exports = User

@@ -2,11 +2,52 @@ const Task = require("../Models/task_modele.js");
 
 exports.createTask = async (req, res) => {
   try {
-    const { date, projectId, projectname, projectdescription, status, dueDate, priority,email,phone,userId,userType,username } = req.body;
-    if (!date ||  !projectId || !projectname || !projectdescription || !status || !dueDate || !priority || !email || !phone || !userId || !userType || !username){
-      return res.status(400).json({ message: "All fields are required" })
+    const {
+      taskId,
+      time,
+      date,
+      email,
+      phone,
+      userId,
+      userType,
+      userName,
+      projectId,
+      projectName,
+      taskName,
+      taskDescription,
+      status,
+      dueDate,
+      priority,
+    } = req.body;
+    if (
+      !date ||
+      !projectId ||
+      !userName ||
+      !projectName ||
+      !taskName ||
+      !taskDescription ||
+      !status ||
+      !dueDate
+    ) {
+      return res.status(400).json({ message: "All fields are required" });
     }
-    const task = new Task({ date, projectId, projectname, projectdescription, status, dueDate, priority, email, phone, userId, userType, username })
+    const task = new Task({
+      taskId,
+      time,
+      date,
+      email,
+      phone,
+      userId,
+      userType,
+      userName,
+      projectId,
+      projectName,
+      taskName,
+      taskDescription,
+      status,
+      dueDate,
+      priority,
+    });
     if (!task) {
       return res.status(400).json({ message: "task creation faild" });
     }
@@ -15,33 +56,40 @@ exports.createTask = async (req, res) => {
   } catch (error) {
     console.log("Error in creating task", error);
     res.status(500).json({ message: "Internal server error" });
-
   }
 };
 
-exports.getAllTask = async (req, res) => {
+// exports.getAllTask = async (req, res) => {
+//   try {
+//     const task = await Task.find();
+//     if (!task) {
+//       return res.status(400).json({ message: "Task list is empty" });
+//     }
+//     res.status(200).json({ task });
+//   } catch (error) {
+//     console.log("Error in getting all task", error);
+//     res.status(500).json({ message: "Internal server error" });
+
+//   }
+// };
+
+// for admin
+
+exports.AllTaskSearchAndFilters = async (req, res) => {
   try {
-    const task = await Task.find();
-    if (!task) {
-      return res.status(400).json({ message: "Task list is empty" });
+    const { search,status, date, dueDate, priority } = req.query
+    let filter = {}
+    if (search) {
+      filter.$or = [
+        { taskId: { $regex: search, $options: "i" } },
+        { projectId: { $regex: search, $options: "i" } },
+      ];
     }
-    res.status(200).json({ task });
-  } catch (error) {
-    console.log("Error in getting all task", error);
-    res.status(500).json({ message: "Internal server error" });
 
-  }
-};
-
-exports.getTaskById = async (req, res) => {
-  try {
-    const {userType, status, date, dueDate, priority } = req.query;
-    let filter = { userId: req.params.userId };
-
-
-    if (userType) {
-      filter.userType = userType;
+    if (priority) {
+      filter.priority = priority;
     }
+
     if (status) {
       filter.status = status;
     }
@@ -51,8 +99,41 @@ exports.getTaskById = async (req, res) => {
     if (dueDate) {
       filter.dueDate = dueDate;
     }
+
+    const task = await Task.find(filter);
+    if (!task) {
+      return res.status(400).json({ message: "Task list is empty" });
+    }
+    res.status(200).json({ task });
+  } catch (error) {
+    console.log("Error in getting  task", error);
+    res.status(500).json({ message: "Internal server error" });
+  }
+};
+
+// for user
+exports.getTaskById = async (req, res) => {
+  try {
+    const { search, status, date, dueDate, priority } = req.query;
+    let filter = { userId: req.params.userId }
+    if (search) {
+      filter.$or = [
+        { taskId: { $regex: search, $options: "i" } },
+        { projectId: { $regex: search, $options: "i" } },
+      ];
+    }
+
+    if (status) {
+      filter.status = status;
+    }
     if (priority) {
       filter.priority = priority;
+    }
+    if (date) {
+      filter.date = date;
+    }
+    if (dueDate) {
+      filter.dueDate = dueDate;
     }
 
     const task = await Task.find(filter);
@@ -61,33 +142,31 @@ exports.getTaskById = async (req, res) => {
       return res.status(400).json({ message: "Task list is empty" });
     }
 
-    res.status(200).json({ task });
+    res.status(200).json({task});
   } catch (error) {
     console.log("Error in getting task by id", error);
     res.status(500).json({ message: "Internal server error" });
   }
 };
-exports.getTaskByProjectId = async (req, res) => {
-  try {
-    const task = await Task.findOne({ projectId: req.params.projectId }).exec();
+// exports.getTaskByProjectId = async (req, res) => {
+//   try {
+//     const task = await Task.findOne({ projectId: req.params.projectId }).exec();
 
-    if (!task) {
-      return res.status(400).json({ message: "task not found!" });
-    }
-    // ====
-    
-    // ====
-    res.status(200).json({ task });
-  } catch (error) {
-    console.log("Error in getting task by project by Id", error);
-    res.status(500).json({ message: "Internal server error" });
-  }
-};
+//     if (!task) {
+//       return res.status(400).json({ message: "task not found!" });
+//     }
+
+//     res.status(200).json({ task });
+//   } catch (error) {
+//     console.log("Error in getting task by project by Id", error);
+//     res.status(500).json({ message: "Internal server error" });
+//   }
+// };
 
 exports.updateTask = async (req, res) => {
   try {
     const task = await Task.findOneAndUpdate(
-      { projectId: req.params.projectId },
+      { taskId: req.params.taskId },
       { $set: req.body },
       { new: true }
     );
@@ -104,7 +183,7 @@ exports.updateTask = async (req, res) => {
 exports.DeleteTask = async (req, res) => {
   try {
     const task = await Task.findOneAndDelete({
-      projectId: req.params.projectId,
+      taskId: req.params.taskId,
     });
     if (!task) {
       return res.status(400).json({ message: "Task not deleted" });
@@ -116,6 +195,7 @@ exports.DeleteTask = async (req, res) => {
   }
 };
 
+// for admin
 // exports.DateFilter = async (req, res) => {
 //   try {
 //     const task = await Task.find({ date: req.body.date });
@@ -153,36 +233,3 @@ exports.DeleteTask = async (req, res) => {
 //     res.status(500).json({ message: "Internal server error" });
 //   }
 // };
-
-exports.SearchAndFilters = async (req, res) => {
-  try {
-    const {userType, status, date, dueDate, priority } = req.query;
-    let filter = {};
-
-
-    if(userType){
-      filter.userType = userType;
-    }
-    if(status){
-      filter.status = status;
-    }
-    if(date){
-      filter.date = date;
-    }
-    if(dueDate){
-      filter.dueDate = dueDate;
-    }
-    if(priority){
-      filter.priority = priority;
-    }
-
-    const task = await Task.find(filter);
-    res.json({task})
-  } catch (error) {
-    res.status(500).json({ message: "Internal server error" });
-  }
-};
-
-
-
-

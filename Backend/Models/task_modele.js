@@ -1,62 +1,79 @@
-const mongoose = require('mongoose')
+const mongoose = require('mongoose');
 
-const TaskScheema = new mongoose.Schema({
-    date:{
-        type:String,
-        require:true
+const TaskSchema = new mongoose.Schema({
+    taskId: {
+        type: String,
+        unique: true
     },
-    email:{
-        type:String,
-        required:true,
+    time: {
+        type: String,
+        required: true
+    },
+    date: {
+        type: String,
+        required: true
+    },
+    email: {
+        type: String,
+        required: true
     },
     phone: {
         type: Number,
         required: true,
-        minlength: 10,
-        maxlenth: 10
+        minlength: 10
     },
-    userId:{
-        type:String,
-        required:true,
+    userId: {
+        type: String,
+        required: true
     },
-    userType:{
-        type:String,
-        required:true,
-        enum:["Admin","Employee"]
-    }, 
-    username:{
-        type:String,
-        required:true
+    userType: {
+        type: String,
+        required: true,
+        enum: ["Admin", "Employee"],
+        default: ""
+    },
+    userName: {
+        type: String,
+        required: true
     },
     projectId: {
         type: String,
-        required: true,
-        unique:true
+        required: true
     },
-    projectname:{
-        type:String,
-        required:true
+    projectName: {
+        type: String,
+        required: true
     },
-    projectdescription:{
-        type:String,
-        default:""
+    taskName: {
+        type: String,
+        required: true
     },
-    status:{
-        type:String,
-        enum:["Ongoing","Hold","Done"],
-        default:"Ongoing"
+    taskDescription: {
+        type: String,
+        default: ""
     },
-    dueDate:{
-        type:String,
-        required:true
+    status: {
+        type: String,
+        enum: ["Ongoing", "Hold", "Done"],
+        default: "Ongoing"
     },
     priority:{
         type:String,
-        enum:["High","Medium","Low"],
-        default:"High"
+        enum:["High","Medium","Low"]
     },
+    dueDate: {
+        type: String,
+        required: true
+    }
+});
 
-})
+TaskSchema.pre('save', async function (next) {
+    if (this.isNew) {
+        const count = (await this.constructor.countDocuments()) + 1; // Get the current count and increment
+        this.taskId = `T${count.toString().padStart(4, '0')}`; // Generate the taskId
+    }
+    next();
+});
 
-const Task = mongoose.model('Task', TaskScheema)
+const Task = mongoose.model('Task', TaskSchema);
 module.exports = Task;

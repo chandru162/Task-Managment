@@ -20,7 +20,7 @@ function Login() {
         }
       );
       alert(responce?.data?.message || "Login Successful");
-      localStorage.setItem("token", responce?.data?.token || "");
+      sessionStorage.setItem("token", responce?.data?.token || "");
       Navigate("/profile");
     } catch (error) {
       console.log(error);

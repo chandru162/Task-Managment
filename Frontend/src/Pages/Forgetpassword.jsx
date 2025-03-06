@@ -19,7 +19,7 @@ function Forgetpassword() {
       alert(responce?.data?.message || "Updation Successful");
       setUserId("");
       setPassword("");
-      Navigate("/");
+      Navigate("/login");
     } catch (error) {
       console.log(error);
       setmessage(

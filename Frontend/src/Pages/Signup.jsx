@@ -51,7 +51,7 @@ function Signup() {
       password: Password,
     })
       .then((res) => {
-        localStorage.setItem("token", res.data.token);
+        sessionStorage.setItem("token", res.data.token);
         alert("Sign up successfully!");
         InputClear();
         Navigate("/profile");

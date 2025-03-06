@@ -10,11 +10,21 @@ import ColumnGroupingTable from "./Pages/ColumnGroupingTable";
 import Navbar from './Components/Navbar';
 import AddTask from './Pages/AddTask';
 import UpdateTask from './Pages/UpdateTask';
-import { CircularProgress, Box, Container } from '@mui/material';
+import { CircularProgress, Box, Container ,Button } from '@mui/material';
 import Footer from './Components/Footer';
+import { createTheme, ThemeProvider } from '@mui/material/styles';
+import CssBaseline from '@mui/material/CssBaseline';
 
 function App() {
   const [loading, setloading] = useState(false);
+  const [darkMode, setDarkMode] = useState(false);
+
+  const theme = createTheme({
+    palette: {
+      mode: darkMode ? 'dark' : 'light',
+    },
+  });
+
   useEffect(() => {
     setloading(true);
     setTimeout(() => {
@@ -23,35 +33,37 @@ function App() {
   }, []);
 
   return (
-    <>
+    <ThemeProvider theme={theme}>
+      <CssBaseline />
       {loading ? (
         <Box display="flex" flexDirection="column" alignItems="center" justifyContent="center" height="100vh">
           <CircularProgress />
           <Box mt={2}>Loading...</Box>
         </Box>
       ) : (
-        <Container>
+        <Container maxWidth="xl">
           <Navbar />
-
+          <Box mt={4} display="flex" justifyContent="flex-end">
+            <Button variant="contained" color="primary" onClick={() => setDarkMode(!darkMode)}>
+              {darkMode ? 'Light Mode' : 'Dark Mode'}
+            </Button>
+          </Box>
           <Box mt={4}>
             <Routes>
-              <Route path="/" element={<ColumnGroupingTable />}>
-              </Route>
+              <Route path="/" element={<ColumnGroupingTable />} />
               <Route path="/login" element={<Login />} />
               <Route path="/forgetpassword" element={<Forgetpassword />} />
               <Route path="/signup" element={<Signup />} />
               <Route path="/profile" element={<Profile />} />
               <Route path="/addtask" element={<AddTask />} />
               <Route path="/updatetask/:taskId" element={<UpdateTask />} />
-
               <Route path="*" element={<Nopage />} />
             </Routes>
           </Box>
-
-          <Footer/>
+          <Footer />
         </Container>
       )}
-    </>
+    </ThemeProvider>
   );
 }
 

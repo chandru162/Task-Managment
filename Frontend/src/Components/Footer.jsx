@@ -13,6 +13,7 @@ function Footer() {
             ? theme.palette.grey[200]
             : theme.palette.grey[800],
       }}
+      style={{marginTop:"100px"}}
     >
       <Container maxWidth="lg">
         <Grid container spacing={4}>

@@ -14,11 +14,14 @@ function Profile() {
   useEffect(() => {
     const FechProfileData = async () => {
       try {
-        const responce = await Axios.get(`http://localhost:5000/api/auth/profile`, {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("token")}`
+        const responce = await Axios.get(
+          `http://localhost:5000/api/auth/profile`,
+          {
+            headers: {
+              Authorization: `Bearer ${sessionStorage.getItem("token")}`,
+            },
           }
-        });
+        );
         setdata(responce.data.user);
       } catch (error) {
         console.log("Error: ", error);
@@ -63,8 +66,8 @@ function Profile() {
     try {
       await Axios.put(`http://localhost:5000/api/auth/updateuser`, data, {
         headers: {
-          Authorization: `Bearer ${localStorage.getItem("token")}`
-        }
+          Authorization: `Bearer ${sessionStorage.getItem("token")}`,
+        },
       });
       setmessage("Profile updated successfully");
       handleClose();
@@ -76,11 +79,14 @@ function Profile() {
 
   const handleDelete = async () => {
     try {
-      await Axios.delete(`http://localhost:5000/api/auth/deleteuser/${data.userId}`, {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem("token")}`
+      await Axios.delete(
+        `http://localhost:5000/api/auth/deleteuser/${data.userId}`,
+        {
+          headers: {
+            Authorization: `Bearer ${sessionStorage.getItem("token")}`,
+          },
         }
-      });
+      );
       setmessage("Profile deleted successfully");
       setTimeout(() => {
         Navigate("/login");
@@ -92,7 +98,7 @@ function Profile() {
   };
 
   const handleLogout = () => {
-    localStorage.removeItem("token");
+    sessionStorage.removeItem("token");
     Navigate("/login");
   };
 

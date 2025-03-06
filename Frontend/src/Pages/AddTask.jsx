@@ -36,7 +36,7 @@ function AddTask() {
   useEffect(() => {
     const FetchProfileData = async () => {
       try {
-        const token = localStorage.getItem("token");
+        const token = sessionStorage.getItem("token");
         if (!token) {
           alert("Session has timeout!, please log in!");
           Navigate("/login");
@@ -45,7 +45,7 @@ function AddTask() {
           `http://localhost:5000/api/auth/profile`,
           {
             headers: {
-              Authorization: `Bearer ${localStorage.getItem("token")}`,
+              Authorization: `Bearer ${sessionStorage.getItem("token")}`,
             },
           }
         );
@@ -90,9 +90,8 @@ function AddTask() {
         alert(res?.data?.message || "Task created successfully!");
         Navigate(-1)
       })
-      .catch((err) => {
-        console.log(err);
-        setmessage(err?.response?.data?.message || "Something wrong");
+      .catch((error) => {
+        setmessage(error?.responce?.data?.message || "All fields are required");
       });
   };
 
@@ -105,7 +104,7 @@ function AddTask() {
         justifyContent="center"
         height="100vh"
       >
-        <form onSubmit={handleSubmit}>
+        <form onSubmit={handleSubmit} style={{marginBottom:"50px",marginTop:"50px"}}>
           <Typography variant="h4" component="h1" gutterBottom>
             Add Task
           </Typography>

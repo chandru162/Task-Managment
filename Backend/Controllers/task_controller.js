@@ -2,14 +2,20 @@ const Task = require("../Models/task_modele.js");
 
 exports.createTask = async (req, res) => {
   try {
-    const task = new Task(req.body);
+    const { date, projectId, projectname, projectdescription, status, dueDate, priority,email,phone,userId,userType,username } = req.body;
+    if (!date ||  !projectId || !projectname || !projectdescription || !status || !dueDate || !priority || !email || !phone || !userId || !userType || !username){
+      return res.status(400).json({ message: "All fields are required" })
+    }
+    const task = new Task({ date, projectId, projectname, projectdescription, status, dueDate, priority, email, phone, userId, userType, username })
     if (!task) {
-      return res.status(400).json({ message: "Task not created" });
+      return res.status(400).json({ message: "task creation faild" });
     }
     await task.save();
     res.status(200).json({ message: "Task created successfully", task });
   } catch (error) {
     console.log("Error in creating task", error);
+    res.status(500).json({ message: "Internal server error" });
+
   }
 };
 
@@ -22,6 +28,8 @@ exports.getAllTask = async (req, res) => {
     res.status(200).json({ task });
   } catch (error) {
     console.log("Error in getting all task", error);
+    res.status(500).json({ message: "Internal server error" });
+
   }
 };
 

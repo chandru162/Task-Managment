@@ -25,6 +25,7 @@ exports.signup = async(req,res)=>{
 
         const token = jwt.sign({userId:newUser.userId},process.env.JWT_KEY,{expiresIn:"4h"})
         
+        
         res.status(201).json({message:"Signup sucessfully!",newUser,token})
 
 
@@ -135,7 +136,7 @@ exports.profile = async(req,res)=>{
         }})
 
     }catch(error){
-        console.log("Profile error:",error)
+        // console.log("Profile error:",error)
         res.status(500).json({ message: "Internal server error" })
 
         

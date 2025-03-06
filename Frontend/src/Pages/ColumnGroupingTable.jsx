@@ -46,16 +46,15 @@ function ColumnGroupingTable() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const token = localStorage.getItem("token");
+        const token = sessionStorage.getItem("token");
         if (!token) {
-          alert("Session has timeout!, please log in!");
           Navigate("/login");
         }
         const response = await Axios.get(
           `http://localhost:5000/api/auth/profile`,
           {
             headers: {
-              Authorization: `Bearer ${localStorage.getItem("token")}`,
+              Authorization: `Bearer ${sessionStorage.getItem("token")}`,
             },
           }
         );
@@ -186,6 +185,7 @@ function ColumnGroupingTable() {
               <TableCell>Name</TableCell>
               <TableCell>Email</TableCell>
               <TableCell>Phone</TableCell>
+              <TableCell>User Type</TableCell>
               <TableCell>Priority</TableCell>
               <TableCell>Status</TableCell>
               <TableCell>Created Date</TableCell>
@@ -203,6 +203,7 @@ function ColumnGroupingTable() {
                 <TableCell>{x.username}</TableCell>
                 <TableCell>{x.email}</TableCell>
                 <TableCell>{x.phone}</TableCell>
+                <TableCell>{x.userType}</TableCell>
                 <TableCell>{x.priority}</TableCell>
                 <TableCell>{x.status}</TableCell>
                 <TableCell>{x.date}</TableCell>

@@ -23,16 +23,19 @@ function UpdateTask() {
   useEffect(() => {
     const FetchProfileData = async () => {
       try {
-        const token = localStorage.getItem("token");
+        const token = sessionStorage.getItem("token");
         if (!token) {
           alert("Session has timeout!, please log in!");
           Navigate("/login");
         }
-        const responce = await Axios.get(`http://localhost:5000/api/auth/profile`, {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("token")}`,
-          },
-        });
+        const responce = await Axios.get(
+          `http://localhost:5000/api/auth/profile`,
+          {
+            headers: {
+              Authorization: `Bearer ${sessionStorage.getItem("token")}`,
+            },
+          }
+        );
         setUser(responce?.data?.user);
       } catch (error) {
         console.log("Error: ", error);

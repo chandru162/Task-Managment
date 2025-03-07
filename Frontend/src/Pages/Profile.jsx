@@ -87,8 +87,9 @@ function Profile() {
           },
         }
       );
+      await sessionStorage.removeItem("token");
       setmessage("Profile deleted successfully");
-      setTimeout(() => {
+      setTimeout(() => {   
         Navigate("/login");
       }, 2000);
     } catch (error) {

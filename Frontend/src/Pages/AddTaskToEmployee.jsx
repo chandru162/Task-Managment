@@ -17,7 +17,7 @@ function AddTaskToEmployee() {
   const Navigate = useNavigate();
   const [ProjectId, setProjectId] = useState("");
   const [UserId, setUserId] = useState("");
-  const [UserType] = useState("Employee");
+  const [UserType, setUserType] = useState("");
   const [TaskName, setTaskName] = useState("");
   const [ProjectName, setProjectName] = useState("");
   const [TaskDescription, setTaskDescription] = useState("");
@@ -91,14 +91,14 @@ function AddTaskToEmployee() {
     };
     fechUsers();
   }, []);
-    // useEffect(() => {
-    //   const selectteduser = Users.find((use) => use.userId === UserId);
-    //   if (selectteduser) {
-    //     setProjectId(selectteduser.user);
-    //   } else {
-    //     console.log("Selected project not found");
-    //   }
-    // }, [UserId, Users]);
+    useEffect(() => {
+      const selectteduser = Users.find((use) => use.userId === UserId);
+      if (selectteduser) {
+        setUserType(selectteduser.userType);
+      } else {
+        console.log("Selected project not found");
+      }
+    }, [UserId, Users]);
 
      
 

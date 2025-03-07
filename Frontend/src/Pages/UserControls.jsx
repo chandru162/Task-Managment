@@ -59,7 +59,7 @@ const UserControls = () => {
             <Grid container spacing={3}>
                 {Array.isArray(users) && users.map((x, index) => (
                     <Grid item xs={12} sm={6} md={4} key={index}>
-                        <Card>
+                        <Card style={{boxShadow:"1px 1px 4px black"}}>
                             <CardContent>
                                 <Typography variant="h6" >Name : {x.userName}</Typography>
                                 <Typography variant="h6" >Email : {x.email}</Typography>

@@ -165,15 +165,15 @@ function Project() {
 
   return (
     <Container maxWidth="md">
-      <Box display="flex" flexDirection="column" alignItems="center" justifyContent="center" height="50vh">
+      <Box display="flex" flexDirection="column" alignItems="center" justifyContent="center" height="70vh">
         <Typography variant="h4" component="h1" gutterBottom>
           Projects
         </Typography>
         <Button style={{marginBottom:"20px"}} variant="contained" color="primary" startIcon={<Add />} onClick={handleCreateClick}>
           Add Project
         </Button>
-        <TableContainer component={Paper} style={{ marginTop: '0px' }}>
-          <Table>
+        <TableContainer component={Paper} style={{ marginTop: '0px',height:"400px" }}>
+          <Table hei>
             <TableHead>
               <TableRow>
                 <TableCell>Project Id</TableCell>
@@ -229,7 +229,7 @@ function Project() {
                 onChange={(e) => setProjectDescription(e.target.value)}
               />
   
-              <TextField
+              {/* <TextField
                 fullWidth
                 margin="normal"
                 type="date"
@@ -237,7 +237,7 @@ function Project() {
                 InputLabelProps={{ shrink: true }}
                 value={date}
                 onChange={(e) => setDate(e.target.value)}
-              />
+              /> */}
               <FormControl fullWidth margin="normal">
                 <InputLabel>Priority</InputLabel>
                 <Select
@@ -264,14 +264,14 @@ function Project() {
           <DialogTitle>Update Project</DialogTitle>
           <DialogContent>
             <Box component="form" onSubmit={(e) => { e.preventDefault(); updateProject(); handleUpdateClose(); }}>
-              <TextField
+              {/* <TextField
                 fullWidth
                 margin="normal"
                 type="text"
                 label="Project ID"
                 value={projectId}
                 onChange={(e) => setProjectId(e.target.value)}
-              />
+              /> */}
               <TextField
                 fullWidth
                 margin="normal"
@@ -288,7 +288,7 @@ function Project() {
                 value={projectDescription}
                 onChange={(e) => setProjectDescription(e.target.value)}
               />
-              <TextField
+              {/* <TextField
                 fullWidth
                 margin="normal"
                 type="date"
@@ -296,7 +296,7 @@ function Project() {
                 InputLabelProps={{ shrink: true }}
                 value={date}
                 onChange={(e) => setDate(e.target.value)}
-              />
+              /> */}
               <FormControl fullWidth margin="normal">
                 <InputLabel>Priority</InputLabel>
                 <Select

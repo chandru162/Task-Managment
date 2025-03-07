@@ -35,11 +35,11 @@ function Forgetpassword() {
         flexDirection="column"
         alignItems="center"
         justifyContent="center"
-        height="100vh"
+        height="50vh"
       >
         <form onSubmit={handleForgetpassword}>
           <Typography variant="h4" component="h1" gutterBottom>
-            Update New Password
+            New Password
           </Typography>
           <TextField
             fullWidth

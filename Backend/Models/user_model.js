@@ -43,7 +43,7 @@ UserScheema.pre('save', async function (next) {
         } else {
             count = 1; 
         }
-        this.userId = `NP${count.toString().padStart(4, '0')}`; // Generate the userId
+        this.userId = `NPU${count.toString().padStart(4, '0')}`; // Generate the userId
     }
     next();
 });

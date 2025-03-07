@@ -75,7 +75,11 @@ function Login() {
             onChange={(e) => setPassword(e.target.value)}
           />
           <Box textAlign="right" width="100%">
-            <Link to="/forgetpassword">Forget password?</Link>
+            <Link
+              to="/forgetpassword"
+            >
+              Forget password?
+            </Link>
           </Box>
           <Typography color="error">{message}</Typography>
           <Button

@@ -26,12 +26,22 @@ function AddTaskToEmployee() {
   const [CreatedDate, setCreatedDate] = useState(
     new Date().toISOString().split("T")[0]
   );
-  const [Time, setTime] = useState(new Date().toISOString().split("T")[1].split("Z")[0]);
   const [DueDate, setDueDate] = useState("");
   const [message, setmessage] = useState("");
   const [projects, setProjects] = useState([]);
 
 
+    const getCurrentTime = () => {
+      let now = new Date();
+      let Hors = now.getHours();
+      let min = now.getMinutes();
+      let ampm = Hors >= 12 ? "PM" : "AM";
+
+      Hors = Hors % 12 || 12;
+      const fulltime = `${Hors}:${min.toString().padStart(2, "0")}:${ampm}`;
+
+      return fulltime;
+    };
 
   useEffect(() => {
     const FetchProfileData = async () => {
@@ -87,8 +97,9 @@ function AddTaskToEmployee() {
       setStatus("");
       setCreatedDate("");
       setDueDate("");
-      setTime("");
     };
+
+    const Time = getCurrentTime()
 
     Axios.post(`http://localhost:5000/api/task/addtasktoemployee`, {
       taskName: TaskName,
@@ -138,11 +149,11 @@ function AddTaskToEmployee() {
         flexDirection="column"
         alignItems="center"
         justifyContent="center"
-        height="100vh"
+        height="80vh"
       >
         <form
           onSubmit={handleSubmit}
-          style={{ marginBottom: "50px", marginTop: "50px" }}
+          style={{ marginBottom: "100px", marginTop: "50px" }}
         >
           <Typography variant="h4" component="h1" gutterBottom>
             Add Task to Employee

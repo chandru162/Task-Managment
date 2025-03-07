@@ -107,7 +107,7 @@ function Dashboard() {
   };
 
   return (
-    <Box sx={{ padding: 3 }}>
+    <Box sx={{ padding: 3 }} item xs={12} sm={4}>
       <Typography variant="h4" align="center" gutterBottom>
         {userType === "Admin" ? "Admin Dashboard" : "Employee Dashboard"}
       </Typography>

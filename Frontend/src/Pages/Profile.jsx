@@ -110,7 +110,7 @@ function Profile() {
           flexDirection="column"
           alignItems="center"
           justifyContent="center"
-          height="100vh"
+          height="50vh"
         >
           <Avatar
             alt="profile"
@@ -157,7 +157,7 @@ function Profile() {
             <DialogContent>
               <TextField
                 margin="dense"
-                name="username"
+                name="userName"
                 label="Name"
                 type="text"
                 fullWidth
@@ -197,7 +197,7 @@ function Profile() {
             <DialogTitle>Confirm Delete</DialogTitle>
             <DialogContent>
               <Typography>Are you sure you want to delete your &quot;Profile&quot;?</Typography>
-              <Typography >&quot;Delete data from database&quot;</Typography>
+              <Typography> &quot;Permanently delete your account &quot;</Typography>
             </DialogContent>
             <DialogActions>
               <Button onClick={handleCloseDelete} color="secondary">
@@ -212,7 +212,7 @@ function Profile() {
           <Dialog open={openLogout} onClose={handleCloseLogout}>
             <DialogTitle>Confirm Logout</DialogTitle>
             <DialogContent>
-              <Typography>Are you sure you want to &quot;Logout&quot;?</Typography>
+              <Typography>Are you sure you want to  &quot;Logout&quot;?</Typography>
             </DialogContent>
             <DialogActions>
               <Button onClick={handleCloseLogout} color="secondary">

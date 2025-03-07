@@ -32,16 +32,31 @@ function Project() {
   const [projectName, setProjectName] = useState('');
   const [projectDescription, setProjectDescription] = useState('');
   const [priority, setPriority] = useState('');
-  const [time, setTime] = useState(new Date().getTime().toString());
   const [date, setDate] = useState(new Date().toISOString().split('T')[0]);
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
   const [projectToDelete, setProjectToDelete] = useState(null);
   const [createDialogOpen, setCreateDialogOpen] = useState(false);
   const [updateDialogOpen, setUpdateDialogOpen] = useState(false);
 
+
   useEffect(() => {
     fetchProjects();
   }, []);
+
+    const getCurrentTime = () => {
+      let now = new Date();
+      let Hors = now.getHours();
+      let min = now.getMinutes();
+      let ampm = Hors >= 12 ? "PM" : "AM";
+
+      Hors = Hors % 12 || 12;
+      const fulltime = `${Hors}:${min.toString().padStart(2, "0")}:${ampm}`;
+
+      return fulltime;
+    };
+
+  const Time = getCurrentTime();
+
 
   const fetchProjects = async () => {
     try {
@@ -52,21 +67,22 @@ function Project() {
     }
   };
 
+
   const createProject = async () => {
     try {
+      
       await axios.post('http://localhost:5000/api/project/createproject', {
         projectId,
         projectName,
         projectDescription,
         priority,
-        time,
+        time:Time,
         date
       });
       setProjectId('');
       setProjectName('');
       setProjectDescription('');
       setPriority('');
-      setTime("");
       setDate(new Date().toISOString().split('T')[0]);
       fetchProjects();
     } catch (error) {
@@ -80,14 +96,13 @@ function Project() {
         projectName,
         projectDescription,
         priority,
-        time,
+        time:Time,
         date
       });
       setProjectId('');
       setProjectName('');
       setProjectDescription('');
       setPriority('');
-      setTime(new Date().getTime().toString());
       setDate(new Date().toISOString().split('T')[0]);
       fetchProjects();
     } catch (error) {
@@ -135,7 +150,6 @@ function Project() {
     setProjectName(project.projectName);
     setProjectDescription(project.projectDescription);
     setPriority(project.priority);
-    setTime(project.time);
     setDate(project.date);
     setUpdateDialogOpen(true);
   };
@@ -146,17 +160,16 @@ function Project() {
     setProjectName('');
     setProjectDescription('');
     setPriority('');
-    setTime(new Date().getTime().toString());
     setDate(new Date().toISOString().split('T')[0]);
   };
 
   return (
     <Container maxWidth="md">
-      <Box display="flex" flexDirection="column" alignItems="center" justifyContent="center" height="100vh">
+      <Box display="flex" flexDirection="column" alignItems="center" justifyContent="center" height="50vh">
         <Typography variant="h4" component="h1" gutterBottom>
           Projects
         </Typography>
-        <Button variant="contained" color="primary" startIcon={<Add />} onClick={handleCreateClick}>
+        <Button style={{marginBottom:"20px"}} variant="contained" color="primary" startIcon={<Add />} onClick={handleCreateClick}>
           Add Project
         </Button>
         <TableContainer component={Paper} style={{ marginTop: '0px' }}>
@@ -215,15 +228,7 @@ function Project() {
                 value={projectDescription}
                 onChange={(e) => setProjectDescription(e.target.value)}
               />
-              <TextField
-                fullWidth
-                margin="normal"
-                type="time"
-                label="Time"
-                InputLabelProps={{ shrink: true }}
-                value={time}
-                onChange={(e) => setTime(e.target.value)}
-              />
+  
               <TextField
                 fullWidth
                 margin="normal"
@@ -282,15 +287,6 @@ function Project() {
                 label="Project Description"
                 value={projectDescription}
                 onChange={(e) => setProjectDescription(e.target.value)}
-              />
-              <TextField
-                fullWidth
-                margin="normal"
-                type="time"
-                label="Time"
-                InputLabelProps={{ shrink: true }}
-                value={time}
-                onChange={(e) => setTime(e.target.value)}
               />
               <TextField
                 fullWidth

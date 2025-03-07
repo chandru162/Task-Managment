@@ -38,7 +38,7 @@ UserScheema.pre('save', async function (next) {
         let count;
         const latestUser = await this.constructor.findOne().sort({ userId: -1 });
         if (latestUser) {
-            const latestuserId = parseInt(latestTask.userId.substring(2));
+            const latestuserId = parseInt(latestUser.userId.substring(2));
             count = latestuserId + 1;
         } else {
             count = 1; 

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState ,useEffect} from "react";
 import Axios from "axios";
 import { Link, useNavigate } from "react-router-dom";
 import {
@@ -23,6 +23,16 @@ function Signup() {
   const [Password, setPassword] = useState("");
   const [ConfirmPassword, setConfirmPassword] = useState("");
   const [message, setMessage] = useState("");
+
+
+    useEffect(()=>{
+            const checking = sessionStorage.getItem("token");
+            if (checking) {
+              alert("You already loged in!");
+              Navigate("/profile");
+            }
+  
+    },[Navigate])
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -62,15 +72,18 @@ function Signup() {
   };
 
   return (
-    <Container maxWidth="sm" style={{marginTop:"100px",marginBottom:"70px"}}>
+    <Container maxWidth="sm">
       <Box
         display="flex"
         flexDirection="column"
         alignItems="center"
         justifyContent="center"
-        height="90vh"
+        height="70vh"
       >
-        <form onSubmit={handleSubmit}>
+        <form
+          onSubmit={handleSubmit}
+          style={{ marginTop: "100px", marginBottom: "70px"}}
+        >
           <Typography variant="h4" component="h1" gutterBottom>
             Sign up
           </Typography>
@@ -130,7 +143,11 @@ function Signup() {
             onChange={(e) => setUserType(e.target.value)}
           >
             <FormControlLabel value="Admin" control={<Radio />} label="Admin" />
-            <FormControlLabel value="Employee" control={<Radio />} label="Employee" />
+            <FormControlLabel
+              value="Employee"
+              control={<Radio />}
+              label="Employee"
+            />
           </RadioGroup>
           <Typography color="error">{message}</Typography>
           <Button type="submit" variant="contained" color="primary" fullWidth>

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Axios from "axios";
 import { Link, useNavigate } from "react-router-dom";
 import { TextField, Button, Typography, Box, Container} from "@mui/material";
@@ -9,9 +9,24 @@ function Login() {
   const [Password, setPassword] = useState("");
   const [message, setmessage] = useState("");
 
+
+
+  useEffect(()=>{
+          const checking = sessionStorage.getItem("token");
+          if (checking) {
+            alert("You already loged in!");
+            Navigate("/profile");
+          }
+
+  },[Navigate])
   const handleLogin = async (e) => {
+
+
     e.preventDefault();
-    try {
+    try {    
+      
+
+
       const responce = await Axios.post(
         `http://localhost:5000/api/auth/login`,
         {
@@ -21,7 +36,7 @@ function Login() {
       );
       alert(responce?.data?.message || "Login Successful");
       sessionStorage.setItem("token", responce?.data?.token || "");
-      Navigate("/profile");
+      Navigate("/");
     } catch (error) {
       console.log(error);
       setmessage(
@@ -37,7 +52,7 @@ function Login() {
         flexDirection="column"
         alignItems="center"
         justifyContent="center"
-        height="100vh"
+        height="50vh"
       >
         <form onSubmit={handleLogin}>
           <Typography variant="h4" component="h1" gutterBottom>

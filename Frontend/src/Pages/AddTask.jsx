@@ -155,11 +155,11 @@ function AddTask() {
         flexDirection="column"
         alignItems="center"
         justifyContent="center"
-        height="70vh"
+        height="100vh"
       >
         <form
           onSubmit={handleSubmit}
-          style={{ marginBottom: "100px", marginTop: "50px" }}
+          style={{ marginBottom: "100px", marginTop: "100px" }}
         >
           <Typography variant="h4" component="h1" gutterBottom>
             Add Task
@@ -194,7 +194,7 @@ function AddTask() {
                   value={project.projectName}
                   onChange={(e) => {setProjectName(e.target.value)}}
                 >
-                  {project.projectName}
+                  {project.projectId} - {project.projectName} -({project.priority})
                 </MenuItem>
               ))}
             </Select>

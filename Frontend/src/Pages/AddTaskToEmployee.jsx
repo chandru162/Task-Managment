@@ -163,11 +163,11 @@ function AddTaskToEmployee() {
         flexDirection="column"
         alignItems="center"
         justifyContent="center"
-        height="80vh"
+        height="100vh"
       >
         <form
           onSubmit={handleSubmit}
-          style={{ marginBottom: "100px", marginTop: "50px" }}
+          style={{ marginBottom: "100px", marginTop: "150px" }}
         >
           <Typography variant="h4" component="h1" gutterBottom>
             Add Task to Employee
@@ -188,7 +188,7 @@ function AddTaskToEmployee() {
                     setUserId(e.target.value);
                   }}
                 >
-                  {x.userId} -- {x.userName}
+                  {x.userId} -- {x.userName} ({x.userType})
                 </MenuItem>
               ))}
             </Select>
@@ -224,7 +224,7 @@ function AddTaskToEmployee() {
                     setProjectName(e.target.value);
                   }}
                 >
-                  {project.projectId} - {project.projectName}
+                  {project.projectId} - {project.projectName} -({project.priority})
                 </MenuItem>
               ))}
             </Select>

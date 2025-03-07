@@ -14,7 +14,6 @@ function Login() {
   useEffect(()=>{
           const checking = sessionStorage.getItem("token");
           if (checking) {
-            alert("You already loged in!");
             Navigate("/profile");
           }
 

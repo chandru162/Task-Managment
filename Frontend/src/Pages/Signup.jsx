@@ -28,7 +28,6 @@ function Signup() {
     useEffect(()=>{
             const checking = sessionStorage.getItem("token");
             if (checking) {
-              alert("You already loged in!");
               Navigate("/profile");
             }
   
@@ -78,7 +77,7 @@ function Signup() {
         flexDirection="column"
         alignItems="center"
         justifyContent="center"
-        height="70vh"
+        height="100vh"
       >
         <form
           onSubmit={handleSubmit}

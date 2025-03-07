@@ -2,7 +2,7 @@ import './App.css';
 import Login from './Pages/Login';
 import Nopage from './Pages/Nopage';
 import Signup from './Pages/Signup';
-import { Routes, Route } from 'react-router-dom';
+import { Routes, Route } from "react-router-dom";
 import { useEffect, useState } from 'react';
 import Forgetpassword from './Pages/Forgetpassword';
 import Profile from './Pages/Profile';
@@ -16,7 +16,7 @@ import { createTheme, ThemeProvider } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
 import Project from './Pages/Project';
 import MenuIcon from '@mui/icons-material/Menu';
-import { BrowserRouter as Router } from 'react-router-dom';
+import { BrowserRouter as Router} from "react-router-dom";
 
 // -----
 // import * as React from "react";
@@ -29,6 +29,7 @@ import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
 // import InboxIcon from "@mui/icons-material/MoveToInbox";
 import HomeIcon from "@mui/icons-material/Home";
+
 import LoginIcon from "@mui/icons-material/Login";
 import PersonAddAlt from "@mui/icons-material/PersonAddAlt";
 import Badge from "@mui/icons-material/Badge";
@@ -38,6 +39,7 @@ import DarkModeIcon from "@mui/icons-material/DarkMode";
 
 import AddTaskToEmployee from './Pages/AddTaskToEmployee.jsx';
 import UserControls from './Pages/UserControls.jsx';
+import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 
 
 function App() {
@@ -139,10 +141,22 @@ function App() {
             >
               <MenuIcon />
             </Button>
+            <br/>
+            <Button
+              variant="outlined"
+              color="secondary"
+              startIcon={<ArrowBackIcon />}
+              onClick={() => window.history.back()}
+              disabled={window.location.pathname === "/"}
+              style={{marginTop:"10px"}}
+            >
+              Back
+            </Button>
+
             <Drawer open={open} onClose={toggleDrawer(false)}>
               {DrawerList()}
             </Drawer>
-            <Box mt={4} display="flex" justifyContent="flex-end">
+            <Box mt={-4} display="flex" justifyContent="flex-end">
               <Button
                 variant="contained"
                 color="primary"
@@ -162,7 +176,7 @@ function App() {
                 <Route path="/addtask" element={<AddTask />} />
                 <Route path="/project" element={<Project />} />
                 <Route path="/updatetask/:taskId" element={<UpdateTask />} />
-                <Route path="/usercontrolls" element={<UserControls/>} />
+                <Route path="/usercontrolls" element={<UserControls />} />
                 <Route
                   path="/addtasktoemployee"
                   element={<AddTaskToEmployee />}

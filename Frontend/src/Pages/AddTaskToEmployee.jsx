@@ -29,6 +29,7 @@ function AddTaskToEmployee() {
   const [DueDate, setDueDate] = useState("");
   const [message, setmessage] = useState("");
   const [projects, setProjects] = useState([]);
+  const [Users, setUsers] = useState([]);
 
 
     const getCurrentTime = () => {
@@ -73,6 +74,33 @@ function AddTaskToEmployee() {
     };
     fetchProjects();
   }, []);
+  useEffect(() => {
+    const fechUsers = async () => {
+      try {
+        const token = sessionStorage.getItem("token")
+        const res = await Axios.get(
+          "http://localhost:5000/api/auth/getalluserforadmin",
+          {
+            headers: { Authorization: `Bearer ${token}` },
+          }
+        );
+        setUsers(res?.data?.users || []);
+      } catch (error) {
+        console.error("Error fetching users: ", error);
+      }
+    };
+    fechUsers();
+  }, []);
+    // useEffect(() => {
+    //   const selectteduser = Users.find((use) => use.userId === UserId);
+    //   if (selectteduser) {
+    //     setProjectId(selectteduser.user);
+    //   } else {
+    //     console.log("Selected project not found");
+    //   }
+    // }, [UserId, Users]);
+
+     
 
   useEffect(() => {
     const selectedProject = projects.find(
@@ -124,21 +152,7 @@ function AddTaskToEmployee() {
         setmessage(
           error?.responce?.data?.message || "All fields are required"
         );
-        console.log(
-         {
-            taskName: TaskName,
-            projectName: ProjectName,
-            userId: UserId,
-            time: Time,
-            userType: UserType,
-            projectId: ProjectId,
-            taskDescription: TaskDescription,
-            priority: Priority,
-            status: Status,
-            date: CreatedDate,
-            dueDate: DueDate,
-          }
-        );
+
       });
   };
 
@@ -159,14 +173,26 @@ function AddTaskToEmployee() {
             Add Task to Employee
           </Typography>
 
-          <TextField
-            fullWidth
-            margin="normal"
-            type="text"
-            label="Employee User ID"
-            value={UserId}
-            onChange={(e) => setUserId(e.target.value)}
-          />
+          <FormControl fullWidth margin="normal">
+            <InputLabel>User Id</InputLabel>
+            <Select
+              value={UserId}
+              onChange={(e) => setUserId(e.target.value)}
+              label="User ID"
+            >
+              {Users.map((x) => (
+                <MenuItem
+                  key={x._id}
+                  value={x.userId}
+                  onChange={(e) => {
+                    setUserId(e.target.value);
+                  }}
+                >
+                  {x.userId} -- {x.userName}
+                </MenuItem>
+              ))}
+            </Select>
+          </FormControl>
           <TextField
             fullWidth
             margin="normal"
@@ -194,9 +220,11 @@ function AddTaskToEmployee() {
                 <MenuItem
                   key={project._id}
                   value={project.projectName}
-                  onChange={(e) => {setProjectName(e.target.value)}}
+                  onChange={(e) => {
+                    setProjectName(e.target.value);
+                  }}
                 >
-                  {project.projectName}
+                  {project.projectId} - {project.projectName}
                 </MenuItem>
               ))}
             </Select>

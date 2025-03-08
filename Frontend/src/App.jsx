@@ -39,7 +39,7 @@ import DarkModeIcon from "@mui/icons-material/DarkMode";
 
 import AddTaskToEmployee from './Pages/AddTaskToEmployee.jsx';
 import UserControls from './Pages/UserControls.jsx';
-import ArrowBackIcon from '@mui/icons-material/ArrowBack';
+// import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 
 
 function App() {
@@ -142,7 +142,7 @@ function App() {
               <MenuIcon />
             </Button>
             <br/>
-            <Button
+            {/* <Button
               variant="outlined"
               color="secondary"
               startIcon={<ArrowBackIcon />}
@@ -151,7 +151,7 @@ function App() {
               style={{marginTop:"10px"}}
             >
               Back
-            </Button>
+            </Button> */}
 
             <Drawer open={open} onClose={toggleDrawer(false)}>
               {DrawerList()}

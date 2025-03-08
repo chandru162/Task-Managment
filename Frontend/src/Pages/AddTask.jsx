@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import Axios from "axios";
 import { useNavigate } from "react-router-dom";
+
 import {
   TextField,
   Select,
@@ -11,6 +12,7 @@ import {
   Typography,
   Box,
   Container,
+  Autocomplete,
 } from "@mui/material";
 
 function AddTask() {
@@ -25,8 +27,8 @@ function AddTask() {
   const [CreatedDate, setCreatedDate] = useState(
     new Date().toISOString().split("T")[0]
   );
-    
-    // const [Time, setTime] = useState("");
+
+  // const [Time, setTime] = useState("");
   const [DueDate, setDueDate] = useState("");
   const [message, setmessage] = useState("");
   const [projects, setProjects] = useState([]);
@@ -37,17 +39,17 @@ function AddTask() {
   const UserType = User.userType;
   const Phone = User.phone;
 
-  const getCurrentTime = ()=>{
-    let now = new Date()
-    let Hors = now.getHours()
-    let min = now.getMinutes()
-    let ampm = Hors >= 12 ? "PM" : "AM"
+  const getCurrentTime = () => {
+    let now = new Date();
+    let Hors = now.getHours();
+    let min = now.getMinutes();
+    let ampm = Hors >= 12 ? "PM" : "AM";
 
-    Hors = Hors % 12 ||12
-    const fulltime = `${Hors}:${min.toString().padStart(2,'0')}:${ampm}`
+    Hors = Hors % 12 || 12;
+    const fulltime = `${Hors}:${min.toString().padStart(2, "0")}:${ampm}`;
 
     return fulltime;
-  }
+  };
 
   useEffect(() => {
     const FetchProfileData = async () => {
@@ -78,7 +80,12 @@ function AddTask() {
     const fetchProjects = async () => {
       try {
         const res = await Axios.get(
-          "http://localhost:5000/api/project/getallproject"
+          "http://localhost:5000/api/project/getallproject",
+          {
+            headers: {
+              Authorization: `Bearer ${sessionStorage.getItem("token")}`,
+            },
+          }
         );
         setProjects(res?.data?.project || []);
       } catch (error) {
@@ -113,12 +120,12 @@ function AddTask() {
       setDueDate("");
     };
 
-    const Time = getCurrentTime()
+    const Time = getCurrentTime();
 
     Axios.post(`http://localhost:5000/api/task/createtask`, {
       taskName: TaskName,
       projectName: ProjectName,
-      time:Time,
+      time: Time,
       email: Email,
       userName: Username,
       userId: UserId,
@@ -131,21 +138,15 @@ function AddTask() {
       date: CreatedDate,
       dueDate: DueDate,
     })
+      .then((res) => {
+        InputClear();
+        alert(res?.data?.message || "Task created successfully!");
 
-
-
-        .then((res) => {
-          InputClear();
-          alert(res?.data?.message || "Task created successfully!");
-
-          Navigate(-1);
-        })
-        .catch((error) => {
-          setmessage(
-            error?.responce?.data?.message || "All fields are required"
-          );
-
-        });
+        Navigate(-1);
+      })
+      .catch((error) => {
+        setmessage(error?.responce?.data?.message || "All fields are required");
+      });
   };
 
   return (
@@ -181,35 +182,23 @@ function AddTask() {
             value={TaskDescription}
             onChange={(e) => setTaskDescription(e.target.value)}
           />
-          <FormControl fullWidth margin="normal">
-            <InputLabel>Project Name</InputLabel>
-            <Select
-              value={ProjectName}
-              onChange={(e) => setProjectName(e.target.value)}
-              label="Project Name"
-            >
-              {projects.map((project) => (
-                <MenuItem
-                  key={project._id}
-                  value={project.projectName}
-                  onChange={(e) => {setProjectName(e.target.value)}}
-                >
-                  {project.projectId} - {project.projectName} -({project.priority})
-                </MenuItem>
-              ))}
-            </Select>
-
-          </FormControl>
-
-          {/* <TextField
-            fullWidth
-            margin="normal"
-            type="date"
-            label="Created Date"
-            InputLabelProps={{ shrink: true }}
-            value={CreatedDate}
-            onChange={(e) => setCreatedDate(e.target.value)}
-          /> */}
+          <Autocomplete
+            options={projects}
+            getOptionLabel={(option) =>
+              `${option.projectId} - ${option.projectName} -(${option.priority})`
+            }
+            onChange={(event, newValue) => {
+              setProjectName(newValue ? newValue.projectName : "");
+            }}
+            renderInput={(params) => (
+              <TextField
+                {...params}
+                label="Project Name"
+                margin="normal"
+                fullWidth
+              />
+            )}
+          />
           <TextField
             fullWidth
             margin="normal"

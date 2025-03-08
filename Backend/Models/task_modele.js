@@ -69,15 +69,29 @@ const TaskSchema = new mongoose.Schema({
 TaskSchema.pre('save', async function (next) {
     if (this.isNew) {
         let count;
+        let startNumber = 4;
+
         const latestTask = await this.constructor.findOne().sort({ taskId: -1 });
+
         if (latestTask) {
-            const latestTaskId = parseInt(latestTask.taskId.substring(1));
+            const latestTaskId = parseInt(latestTask.taskId.substring(1)); 
+
+            if (isNaN(latestTaskId)) {
+                return next(new Error("Invalid taskId format in database"));
+            }
+
             count = latestTaskId + 1;
+
+            if (count.toString().length > startNumber) {
+                startNumber = count.toString().length;
+            }
         } else {
-            count = 1; 
+            count = 1;
         }
-        this.taskId = `T${count.toString().padStart(4, '0')}`;
+
+        this.taskId = `T${count.toString().padStart(startNumber, '0')}`;
     }
+
     next();
 });
 

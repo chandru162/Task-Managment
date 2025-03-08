@@ -1,10 +1,15 @@
 const Project = require("../Models/project_model.js");
+const User = require("../Models/user_model.js")
+const dotenv = require('dotenv')
+const jwt = require('jsonwebtoken')
+dotenv.config()
 
 exports.createProject = async (req, res) => {
   try {
-    const { time, date, projectId, projectName, projectDescription, priority } =
+    const { userId,time, date, projectId, projectName, projectDescription, priority } =
       req.body;
     if (
+      !userId ||
       !time ||
       !date ||
       !projectName ||
@@ -14,6 +19,7 @@ exports.createProject = async (req, res) => {
       return res.status(400).json({ message: "All fields are required" });
     }
     const project = new Project({
+      userId,
       time,
       date,
       projectId,
@@ -70,6 +76,17 @@ exports.UpdateProject = async (req, res) => {
 
 exports.getAllProject = async (req, res) => {
   try {
+    const token = req.headers.authorization.split(" ")[1];
+
+    if (!token) {
+      return res.status(400).json({ message: "Session expired, please login" });
+    }
+
+    const decode = jwt.verify(token, process.env.JWT_KEY);
+    if (!decode) {
+      return res.status(400).json({ message: "Invalid token" });
+    }
+
     const project = await Project.find();
     if (!project) {
       return res.status(400).json({ message: "project list is empty" });
@@ -80,3 +97,30 @@ exports.getAllProject = async (req, res) => {
     res.status(500).json({ message: "Internal server error" });
   }
 };
+
+exports.GetAllprojectForAdmin = async (req, res) => {
+    try {
+        const token = req.headers.authorization.split(" ")[1];
+
+        if (!token) {
+            return res.status(400).json({ message: "Session expired, please login" });
+        }
+
+        const decode = jwt.verify(token, process.env.JWT_KEY);
+        if (!decode) {
+            return res.status(400).json({ message: "Invalid token" });
+        }
+
+        const user = await User.findOne({ userId: decode.userId }).exec();
+        if (!user || user.userType !== 'Admin') {
+            return res.status(403).json({ message: "Access denied" });
+        }
+
+      const project = await Project.find().exec();
+        res.status(200).json({ project });
+
+    } catch (error) {
+        console.log("Get all project for admin error:", error);
+        res.status(500).json({ message: "Internal server error" });
+    }
+}

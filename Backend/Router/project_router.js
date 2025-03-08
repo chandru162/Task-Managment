@@ -4,11 +4,13 @@ const {
   DeleteProject,
   UpdateProject,
   getAllProject,
+  GetAllprojectForAdmin,
 } = require("../Controllers/project_controller.js");
 
 const router = express.Router();
 
 router.get("/getallproject", getAllProject);
+router.get("/getallprojectforadmin", GetAllprojectForAdmin);
 
 router.post("/createproject", createProject);
 

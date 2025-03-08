@@ -175,7 +175,7 @@ function AddTaskToEmployee() {
           <Autocomplete
             options={Users}
             getOptionLabel={(option) =>
-              `${option.userId} -- ${option.userName} (${option.userType})`
+              `${option.userId} - ${option.userName} (${option.userType})`
             }
             onChange={(event, newValue) => {
               setUserId(newValue ? newValue.userId : "");
@@ -210,7 +210,7 @@ function AddTaskToEmployee() {
           <Autocomplete
             options={projects}
             getOptionLabel={(option) =>
-              `${option.projectId} -- ${option.projectName} (${option.priority})`
+              `${option.projectId} - ${option.projectName} (${option.priority})`
             }
             onChange={(event, newValue) => {
               setProjectName(newValue ? newValue.projectName : "");

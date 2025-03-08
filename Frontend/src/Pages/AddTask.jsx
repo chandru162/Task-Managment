@@ -185,7 +185,7 @@ function AddTask() {
           <Autocomplete
             options={projects}
             getOptionLabel={(option) =>
-              `${option.projectId} - ${option.projectName} -(${option.priority})`
+              `${option.projectId} - ${option.projectName} (${option.priority})`
             }
             onChange={(event, newValue) => {
               setProjectName(newValue ? newValue.projectName : "");

@@ -1,8 +1,7 @@
-.tablecell{
-    max-width: 200px;
+
+
+.tablecell-name,.tablecell-des{
+    max-width: 126px;
     white-space: normal;
     word-wrap: break-word;
 }
-
-
-

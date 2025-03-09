@@ -139,7 +139,7 @@ function Dashboard() {
               onClick={() => navigate("/addtasktoemployee")}
               startIcon={<Add />}
             >
-              Add Task for Employee
+              Task for Employee
             </Button>
           </Tooltip>
           <Tooltip title="Go to user Controlls">
@@ -238,10 +238,10 @@ function Dashboard() {
           maxWidth: "100%",
           overflowX: "scroll",
         }}
-        style={{ height: "80vh" }}
+        style={{ height: "70vh" }}
       >
         <Table stickyHeader>
-          <TableHead>
+          <TableHead className="table-head">
             <TableRow>
               <TableCell className="tablecell" style={{ color: "darkblue" }}>
                 TaskID
@@ -259,13 +259,13 @@ function Dashboard() {
                 TaskName
               </TableCell>
               <TableCell className="tablecell" style={{ color: "darkblue" }}>
-                TaskDescription
+                Description
               </TableCell>
               <TableCell className="tablecell" style={{ color: "darkblue" }}>
                 ProjectId
               </TableCell>
               <TableCell className="tablecell" style={{ color: "darkblue" }}>
-                ProjectName
+                Project
               </TableCell>
               <TableCell className="tablecell" style={{ color: "darkblue" }}>
                 Status
@@ -293,8 +293,8 @@ function Dashboard() {
                   <TableCell className="tablecell" style={{ color: "red" }}>
                     {x.userId}
                   </TableCell>
-                  <TableCell className="tablecell">{x.taskName}</TableCell>
-                  <TableCell className="tablecell">
+                  <TableCell className="tablecell-name">{x.taskName}</TableCell>
+                  <TableCell className="tablecell-des">
                     {x.taskDescription}
                   </TableCell>
                   <TableCell className="tablecell" style={{ color: "red" }}>

@@ -160,7 +160,7 @@ function AddTask() {
       >
         <form
           onSubmit={handleSubmit}
-          style={{ marginBottom: "100px", marginTop: "100px" }}
+          style={{marginTop: "20px" }}
         >
           <Typography variant="h4" component="h1" gutterBottom>
             Add Task

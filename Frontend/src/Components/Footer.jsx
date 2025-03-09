@@ -13,10 +13,10 @@ function Footer() {
             ? theme.palette.grey[200]
             : theme.palette.grey[800],
       }}
-      style={{marginTop:"170px"}}
+      style={{marginTop:"100px"}}
     >
-      <Container maxWidth="lg">
-        <Grid container spacing={4}>
+      <Container maxWidth="lg" >
+        <Grid container spacing={2}>
           <Grid item xs={12} sm={4}>
             <Typography variant="h6" gutterBottom>
               Task Management System

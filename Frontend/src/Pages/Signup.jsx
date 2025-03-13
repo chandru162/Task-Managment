@@ -1,4 +1,4 @@
-import { useState ,useEffect} from "react";
+import { useState,useEffect } from "react";
 import Axios from "axios";
 import { Link, useNavigate } from "react-router-dom";
 import {
@@ -24,14 +24,11 @@ function Signup() {
   const [ConfirmPassword, setConfirmPassword] = useState("");
   const [message, setMessage] = useState("");
 
-
-    useEffect(()=>{
-            const checking = sessionStorage.getItem("token");
-            if (checking) {
-              Navigate("/profile");
-            }
+  const checking = sessionStorage.getItem("token");
   
-    },[Navigate])
+  useEffect(()=>{
+    Navigate("/profile")
+  },[Navigate])
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -62,6 +59,11 @@ function Signup() {
         sessionStorage.setItem("token", res.data.token);
         alert("Sign up successfully!");
         InputClear();
+        if (checking) {
+          setTimeout(() => {
+            sessionStorage.removeItem("token");
+          }, 14395000);
+        }
         Navigate("/profile");
       })
       .catch((err) => {
@@ -81,7 +83,7 @@ function Signup() {
       >
         <form
           onSubmit={handleSubmit}
-          style={{ marginTop: "100px", marginBottom: "70px"}}
+          style={{ marginTop: "100px", marginBottom: "70px" }}
         >
           <Typography variant="h4" component="h1" gutterBottom>
             Sign up

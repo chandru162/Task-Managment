@@ -87,11 +87,11 @@ function Profile() {
           },
         }
       );
-      await sessionStorage.removeItem("token");
       setmessage("Profile deleted successfully");
       setTimeout(() => {   
+        sessionStorage.removeItem("token");
         Navigate("/login");
-      }, 2000);
+      },2000);
     } catch (error) {
       console.log("Error: ", error);
       setmessage("Failed to delete profile");
@@ -111,7 +111,7 @@ function Profile() {
           flexDirection="column"
           alignItems="center"
           justifyContent="center"
-          height="50vh"
+          height="65vh"
         >
           <Avatar
             alt="profile"

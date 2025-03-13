@@ -126,8 +126,8 @@ function Project() {
           projectName,
           projectDescription,
           priority,
-          time: Time,
-          date,
+          // time: Time,
+          // date,
         }
       );
       setProjectId("");

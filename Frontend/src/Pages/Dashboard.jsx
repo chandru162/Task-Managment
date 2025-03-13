@@ -216,7 +216,7 @@ function Dashboard() {
           />
         </Grid>
         <Grid item xs={12} sm={4}>
-          <Tooltip title="Create a task for me">
+          <Tooltip title="Create a task for you">
             <Button
               variant="contained"
               color="primary"
@@ -304,10 +304,12 @@ function Dashboard() {
                   <TableCell className="tablecell">
                     <Chip
                       label={x.status}
-                      color={x.status === "Done" ? "success" : "warning"}
+                      color={x.status === "Done" ? "success" : x.status === "Ongoing" ? "primary" : "warning"}
                       icon={
                         x.status === "Done" ? (
                           <CheckCircle />
+                        ) : x.status === "Ongoing" ? (
+                          <HourglassEmpty />
                         ) : (
                           <HourglassEmpty />
                         )
@@ -315,7 +317,7 @@ function Dashboard() {
                     />
                   </TableCell>
                   <TableCell
-                    style={{ color: x.priority === "High" ? "red" : "blue" }}
+                    style={{ color: x.priority === "High" ? "red" : x.priority === "Medium" ? "orange" :"darkblue" }}
                   >
                     {x.priority}
                   </TableCell>

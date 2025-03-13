@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import {useEffect, useState } from "react";
 import Axios from "axios";
 import { Link, useNavigate } from "react-router-dom";
 import { TextField, Button, Typography, Box, Container} from "@mui/material";
@@ -9,18 +9,12 @@ function Login() {
   const [Password, setPassword] = useState("");
   const [message, setmessage] = useState("");
 
+const checking = sessionStorage.getItem("token");
+useEffect(()=>{
+  Navigate("/profile")
+},[Navigate])
 
-
-  useEffect(()=>{
-          const checking = sessionStorage.getItem("token");
-          if (checking) {
-            Navigate("/profile");
-          }
-
-  },[Navigate])
   const handleLogin = async (e) => {
-
-
     e.preventDefault();
     try {    
       
@@ -35,7 +29,15 @@ function Login() {
       );
       alert(responce?.data?.message || "Login Successful");
       sessionStorage.setItem("token", responce?.data?.token || "");
+      
+      if (checking) {
+        setTimeout(() => {
+          sessionStorage.removeItem("token");
+        },14395000);
+      }
+
       Navigate("/");
+
     } catch (error) {
       console.log(error);
       setmessage(

@@ -11,7 +11,10 @@ function Login() {
 
 const checking = sessionStorage.getItem("token");
 useEffect(()=>{
-  Navigate("/profile")
+  if(checking){
+    Navigate("/profile")
+  }
+  
 },[Navigate])
 
   const handleLogin = async (e) => {

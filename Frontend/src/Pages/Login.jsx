@@ -15,7 +15,7 @@ useEffect(()=>{
     Navigate("/profile")
   }
   
-},[Navigate])
+},[Navigate, checking])
 
   const handleLogin = async (e) => {
     e.preventDefault();
@@ -36,7 +36,7 @@ useEffect(()=>{
       if (checking) {
         setTimeout(() => {
           sessionStorage.removeItem("token");
-        },14395000);
+        },7200000);
       }
 
       Navigate("/");

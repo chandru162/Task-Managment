@@ -27,8 +27,10 @@ function Signup() {
   const checking = sessionStorage.getItem("token");
   
   useEffect(()=>{
-    Navigate("/profile")
-  },[Navigate])
+    if (checking) {
+      Navigate("/profile");
+    }
+  },[Navigate, checking])
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -62,7 +64,7 @@ function Signup() {
         if (checking) {
           setTimeout(() => {
             sessionStorage.removeItem("token");
-          }, 14395000);
+          },7200000);
         }
         Navigate("/profile");
       })
